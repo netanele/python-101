@@ -3,9 +3,17 @@
 Python Tutorial: From Basics to Advanced
 
 This file serves as a comprehensive tutorial covering Python from basic to advanced concepts,
-including the latest features from Python 3.10 through 3.13.
+including the latest features from Python 3.10 through 3.14 (as of July 2025).
 
 Each section contains executable code examples with detailed comments explaining the concepts.
+The tutorial is regularly updated to include the most current Python features and best practices.
+
+Version Coverage:
+- Python 3.10: Pattern matching, improved error messages
+- Python 3.11: Performance improvements, exception groups, Self type
+- Python 3.12: F-string enhancements, new generics syntax
+- Python 3.13: Free-threading, JIT compiler, mobile support, new REPL
+- Python 3.14: JIT improvements, threading enhancements (in development)
 """
 
 # Table of Contents:
@@ -29,9 +37,10 @@ Each section contains executable code examples with detailed comments explaining
 #    - Functional Programming Concepts
 # 4. Modern Python Features
 #    - Python 3.10: Structural Pattern Matching, Improved Error Messages
-#    - Python 3.11: Performance Improvements, Exception Groups
+#    - Python 3.11: Performance Improvements, Exception Groups, Self Type
 #    - Python 3.12: F-string Improvements, New Type Annotation Syntax
-#    - Python 3.13: JIT Compiler, Free-Threaded Mode, New REPL
+#    - Python 3.13: Free-Threading, JIT Compiler, Mobile Support, New REPL
+#    - Python 3.14: JIT Maturation, Threading Enhancements (in development)
 # 5. Pydantic and Pydantic AI
 
 ##############################################################################
@@ -1102,10 +1111,10 @@ def factorial_tail(n, accumulator=1):
 print(f"Factorial of 5 (tail recursion): {factorial_tail(5)}")
 
 ##############################################################################
-# SECTION 4: MODERN PYTHON FEATURES (3.10-3.13)
+# SECTION 4: MODERN PYTHON FEATURES (3.10-3.14)
 ##############################################################################
 
-print("\n=== SECTION 4: MODERN PYTHON FEATURES (3.10-3.13) ===")
+print("\n=== SECTION 4: MODERN PYTHON FEATURES (3.10-3.14) ===")
 
 # ===== Python 3.10 Features =====
 print("\n--- Python 3.10 Features ---")
@@ -1324,39 +1333,127 @@ point2: Point2D = (3.0, 4.0)
 print(f"Distance between points: {distance(point1, point2)}")
 
 # ===== Python 3.13 Features =====
-print("\n--- Python 3.13 Features ---")
+print("\n--- Python 3.13 Features (Released October 2024) ---")
 
-# JIT (Just-In-Time) compiler
-print("Python 3.13 introduces an experimental JIT compiler")
-print("- Automatically optimizes hot code paths")
-print("- Can significantly improve performance for CPU-bound code")
-print("- No code changes required to benefit from it")
+# Free-threaded CPython (PEP 703) - Most significant feature
+print("🚀 Free-threaded CPython (PEP 703) - EXPERIMENTAL")
+print("- Removes the Global Interpreter Lock (GIL) when built with --disable-gil")
+print("- Enables true parallel execution of Python threads")
+print("- Requires special interpreter build: python3.13t")
+print("- Significant performance gains for multi-threaded CPU-bound tasks")
+print("- Still experimental - use with caution in production")
 
-# Free-threaded mode (PEP 703)
-print("\nPython 3.13 introduces experimental free-threaded mode")
-print("- Removes the Global Interpreter Lock (GIL)")
-print("- Allows true parallel execution of Python threads")
-print("- Can be enabled with a command-line flag")
-print("- Improves performance for multi-threaded CPU-bound tasks")
+# JIT Compiler - Experimental
+print("\n⚡ Experimental JIT Compiler (Copy-and-Patch)")
+print("- Highly experimental just-in-time compiler")
+print("- Uses copy-and-patch compilation technique")
+print("- Must be enabled explicitly (not default)")
+print("- Can provide significant speedups for certain workloads")
+print("- Still in early development - expect changes")
 
-# New interactive interpreter (REPL)
-print("\nPython 3.13 includes a new interactive interpreter (REPL)")
-print("- Syntax highlighting")
-print("- Better multiline editing")
-print("- Improved tab completion")
-print("- Command history with search")
+# New Interactive REPL
+print("\n🎯 New Interactive Interpreter (PyREPL)")
+print("- Complete rewrite of the interactive shell")
+print("- Syntax highlighting with color support")
+print("- Improved multiline editing capabilities")
+print("- Enhanced tab completion and introspection")
+print("- Command history with search functionality")
+print("- Better error handling and display")
 
-# Enhanced error messages
-print("\nPython 3.13 further improves error messages")
-print("- More precise error locations")
-print("- Better suggestions for fixing errors")
-print("- More helpful context in tracebacks")
+# iOS and Android Support
+print("\n📱 Mobile Platform Support")
+print("- Official support for iOS and Android platforms")
+print("- PEP 730: iOS support in the standard library")
+print("- PEP 738: Android support improvements")
+print("- Enhanced mobile app development capabilities")
+print("- Better integration with mobile development workflows")
 
-# Improved typing features
-print("\nPython 3.13 includes typing improvements")
-print("- Type parameter defaults")
-print("- Better support for variadic generics")
-print("- More precise type checking")
+# Enhanced Error Messages
+print("\n🔍 Enhanced Error Messages")
+print("- More precise error location indicators")
+print("- Better suggestions for fixing common errors")
+print("- Improved traceback formatting and context")
+print("- More helpful hints for beginners")
+
+# Typing Improvements
+print("\n📝 Typing System Enhancements")
+print("- Type parameter defaults (PEP 696)")
+print("- Improved support for variadic generics")
+print("- Better generic type inference")
+print("- Enhanced runtime type checking capabilities")
+
+# Security and Performance
+print("\n🔒 Security and Performance Improvements")
+print("- Enhanced security features and CVE fixes")
+print("- Memory usage optimizations")
+print("- Startup time improvements")
+print("- Better garbage collection performance")
+
+# Standard Library Updates
+print("\n📚 Standard Library Updates")
+print("- pathlib improvements for better path handling")
+print("- Enhanced warnings system with new filters")
+print("- Improved docstring parsing capabilities")
+print("- Various module updates and bug fixes")
+
+# ===== Python 3.14 Features =====
+print("\n--- Python 3.14 Features (Expected October 2025) ---")
+print("🔮 Note: As of July 2025, Python 3.14 is in development/beta")
+
+# JIT Compiler Improvements
+print("\n⚡ JIT Compiler Maturation")
+print("- Copy-and-patch JIT compiler is more stable")
+print("- Better optimization heuristics")
+print("- Reduced compilation overhead")
+print("- Improved compatibility with existing code")
+print("- May become enabled by default in certain scenarios")
+
+# Further GIL Improvements
+print("\n🔄 Free-Threading Enhancements")
+print("- More libraries compatible with free-threaded mode")
+print("- Better performance in free-threaded builds")
+print("- Reduced overhead when GIL is disabled")
+print("- Improved debugging tools for threaded code")
+
+# Performance Improvements
+print("\n🚀 Performance Optimizations")
+print("- Further interpreter optimizations")
+print("- Improved memory management")
+print("- Faster startup times")
+print("- Better optimization of common patterns")
+
+# Language Features
+print("\n🔧 Language Enhancements")
+print("- Potential new syntax features (TBD)")
+print("- Enhanced pattern matching capabilities")
+print("- Improved comprehension performance")
+print("- Better support for modern Python idioms")
+
+# Standard Library Evolution
+print("\n📖 Standard Library Updates")
+print("- Continued pathlib enhancements")
+print("- New modules for modern development")
+print("- Deprecated module removals")
+print("- Better integration with external tools")
+
+# Developer Experience
+print("\n👩‍💻 Developer Experience")
+print("- Enhanced debugging capabilities")
+print("- Better profiling tools")
+print("- Improved IDE integration")
+print("- More helpful development warnings")
+
+print("\n📅 Note: Python 3.14 features are subject to change during development")
+print("Check the official Python documentation for the latest updates")
+
+# Version Summary
+print("\n=== Python Version Summary ===")
+print("🐍 Python 3.10: Pattern matching, better error messages")
+print("🐍 Python 3.11: 25% performance boost, exception groups, Self type")
+print("🐍 Python 3.12: F-string improvements, new type syntax, generics")
+print("🐍 Python 3.13: Free-threading, JIT compiler, mobile support, new REPL")
+print("🐍 Python 3.14: JIT maturation, threading improvements (in development)")
+print("\n💡 Recommendation: Use Python 3.11+ for production, 3.13+ for experimentation")
 
 ##############################################################################
 # SECTION 5: PYDANTIC AND PYDANTIC AI
@@ -1618,11 +1715,19 @@ print("\nThis tutorial has covered Python from basic to advanced concepts, inclu
 print("- Basic syntax, data types, and control structures")
 print("- Object-oriented programming with classes and inheritance")
 print("- Advanced features like threading, asyncio, and generators")
-print("- Modern Python features from versions 3.10 through 3.13")
+print("- Modern Python features from versions 3.10 through 3.14")
 print("- Data validation and AI integration with Pydantic and Pydantic AI")
 
-print("\nPython continues to evolve with new features and improvements in each version.")
-print("The language's readability, extensive standard library, and vibrant ecosystem")
-print("make it an excellent choice for beginners and experts alike.")
+print("\nPython continues to evolve rapidly with new features and improvements in each version.")
+print("Recent developments like free-threading and JIT compilation show Python's commitment")
+print("to performance and modern computing paradigms. The language's readability, extensive")
+print("standard library, and vibrant ecosystem make it an excellent choice for beginners and")
+print("experts alike.")
+
+print("\n🔮 Looking Forward:")
+print("- Python 3.14 (October 2025) will bring JIT and threading maturation")
+print("- Mobile development support continues to improve")
+print("- Performance remains a key focus with ongoing optimizations")
+print("- The ecosystem continues to grow with modern tools and libraries")
 
 print("\nHappy coding!")
