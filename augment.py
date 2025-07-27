@@ -818,11 +818,15 @@ def cpu_bound_task(number):
 # Using a process pool to execute tasks in parallel
 if __name__ == "__main__":  # This guard is important for multiprocessing
     print("\nMultiprocessing with Pool:")
-    # Create a pool of worker processes
-    with multiprocessing.Pool(processes=3) as pool:
-        # Map the function to the inputs
-        results = pool.map(cpu_bound_task, [1000000, 2000000, 3000000])
-        print(f"Pool results: {results}")
+    try:
+        # Create a pool of worker processes
+        with multiprocessing.Pool(processes=3) as pool:
+            # Map the function to the inputs
+            results = pool.map(cpu_bound_task, [1000000, 2000000, 3000000])
+            print(f"Pool results: {results}")
+    except Exception as e:
+        print(f"Multiprocessing encountered an error: {e}")
+        print("Continuing with the rest of the tutorial...")
 
 # ===== Asyncio and Asynchronous Programming =====
 print("\n--- Asyncio and Asynchronous Programming ---")
@@ -854,7 +858,11 @@ async def main():
 
 # Run the asyncio event loop
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print(f"Asyncio main() encountered an error: {e}")
+        print("Continuing with the rest of the tutorial...")
 
 # Async context manager
 class AsyncResource:
@@ -880,7 +888,11 @@ async def use_async_resource():
 
 # Run the async context manager example
 if __name__ == "__main__":
-    asyncio.run(use_async_resource())
+    try:
+        asyncio.run(use_async_resource())
+    except Exception as e:
+        print(f"Async context manager encountered an error: {e}")
+        print("Continuing with the rest of the tutorial...")
 
 # ===== Type Hints and Annotations =====
 print("\n--- Type Hints and Annotations ---")
@@ -1971,245 +1983,255 @@ print("\n--- Pydantic Basics ---")
 
 # Pydantic is a data validation and settings management library
 # It uses Python type annotations to validate data and manage configurations
-from pydantic import BaseModel, Field, ValidationError, validator
-from typing import List, Optional, Dict, Union
-from datetime import datetime
-import uuid
-
-# Basic model definition
-class User(BaseModel):
-    """A Pydantic model representing a user."""
-    id: uuid.UUID = Field(default_factory=uuid.uuid4)  # Auto-generated UUID
-    username: str
-    email: str
-    full_name: Optional[str] = None  # Optional field with default None
-    age: int = Field(gt=0, lt=120)  # Field with validation constraints
-    is_active: bool = True  # Field with default value
-    created_at: datetime = Field(default_factory=datetime.now)  # Auto-generated timestamp
-    tags: List[str] = []  # List field with default empty list
-
-# Creating a model instance
 try:
-    # Valid data
-    user = User(
-        username="johndoe",
-        email="john@example.com",
-        full_name="John Doe",
-        age=30,
-        tags=["developer", "python"]
+    from pydantic import BaseModel, Field, ValidationError, validator
+    from typing import List, Optional, Dict, Union
+    from datetime import datetime
+    import uuid
+    
+    # Basic model definition
+    class User(BaseModel):
+        """A Pydantic model representing a user."""
+        id: uuid.UUID = Field(default_factory=uuid.uuid4)  # Auto-generated UUID
+        username: str
+        email: str
+        full_name: Optional[str] = None  # Optional field with default None
+        age: int = Field(gt=0, lt=120)  # Field with validation constraints
+        is_active: bool = True  # Field with default value
+        created_at: datetime = Field(default_factory=datetime.now)  # Auto-generated timestamp
+        tags: List[str] = []  # List field with default empty list
+
+    # Creating a model instance
+    try:
+        # Valid data
+        user = User(
+            username="johndoe",
+            email="john@example.com",
+            full_name="John Doe",
+            age=30,
+            tags=["developer", "python"]
+        )
+        print(f"User created: {user}")
+
+        # Access fields
+        print(f"Username: {user.username}")
+        print(f"Email: {user.email}")
+        print(f"Age: {user.age}")
+
+        # Convert to dictionary
+        user_dict = user.model_dump()
+        print(f"User as dict: {user_dict}")
+
+        # Convert to JSON
+        user_json = user.model_dump_json()
+        print(f"User as JSON: {user_json}")
+
+        # Invalid data (will raise ValidationError)
+        invalid_user = User(
+            username="alice",
+            email="invalid-email",  # Invalid email format
+            age=-5  # Invalid age (must be > 0)
+        )
+    except ValidationError as e:
+        print(f"Validation error: {e}")
+
+    # Custom validators
+    class Product(BaseModel):
+        id: int
+        name: str
+        price: float = Field(gt=0)  # Price must be greater than 0
+        tags: List[str] = []
+
+        # Custom validator for name field
+        @validator('name')
+        def name_must_not_be_empty(cls, v):
+            if not v.strip():
+                raise ValueError('Name cannot be empty')
+            return v.title()  # Convert to title case
+
+        # Custom validator for tags field
+        @validator('tags')
+        def tags_must_be_unique(cls, v):
+            if len(v) != len(set(v)):
+                raise ValueError('Tags must be unique')
+            return v
+
+    try:
+        # Valid product
+        product = Product(id=1, name="laptop", price=999.99, tags=["electronics", "computers"])
+        print(f"\nProduct created: {product}")
+
+        # Invalid product (empty name)
+        invalid_product = Product(id=2, name="", price=10.99)
+    except ValidationError as e:
+        print(f"Product validation error: {e}")
+
+    # Nested models
+    class Address(BaseModel):
+        street: str
+        city: str
+        country: str
+        postal_code: str
+
+    class Customer(BaseModel):
+        id: int
+        name: str
+        addresses: List[Address]  # List of Address models
+        primary_address: Optional[Address] = None  # Optional nested model
+
+    # Create a customer with nested address models
+    address1 = Address(street="123 Main St", city="New York", country="USA", postal_code="10001")
+    address2 = Address(street="456 Elm St", city="San Francisco", country="USA", postal_code="94107")
+
+    customer = Customer(
+        id=1,
+        name="Jane Smith",
+        addresses=[address1, address2],
+        primary_address=address1
     )
-    print(f"User created: {user}")
 
-    # Access fields
-    print(f"Username: {user.username}")
-    print(f"Email: {user.email}")
-    print(f"Age: {user.age}")
+    print(f"\nCustomer created: {customer}")
+    print(f"Primary address city: {customer.primary_address.city}")
 
-    # Convert to dictionary
-    user_dict = user.model_dump()
-    print(f"User as dict: {user_dict}")
+    # ===== Pydantic AI =====
+    print("\n--- Pydantic AI ---")
 
-    # Convert to JSON
-    user_json = user.model_dump_json()
-    print(f"User as JSON: {user_json}")
+    # Pydantic AI is an extension of Pydantic for working with AI models
+    # It provides tools for structured extraction from LLM outputs
 
-    # Invalid data (will raise ValidationError)
-    invalid_user = User(
-        username="alice",
-        email="invalid-email",  # Invalid email format
-        age=-5  # Invalid age (must be > 0)
-    )
-except ValidationError as e:
-    print(f"Validation error: {e}")
+    print("Pydantic AI is a framework for building AI agents with structured data")
+    print("Key features include:")
+    print("1. Structured extraction from LLM outputs")
+    print("2. Function calling and tool usage")
+    print("3. Agent frameworks for complex workflows")
+    print("4. Type safety and validation")
 
-# Custom validators
-class Product(BaseModel):
-    id: int
-    name: str
-    price: float = Field(gt=0)  # Price must be greater than 0
-    tags: List[str] = []
+    # Example of a Pydantic AI model (conceptual, not runnable without actual AI backend)
+    class MovieReview(BaseModel):
+        """A model for extracting structured movie review data from text."""
+        title: str = Field(description="The title of the movie")
+        director: str = Field(description="The director of the movie")
+        year: int = Field(description="The year the movie was released")
+        rating: float = Field(description="Rating from 0-10", ge=0, le=10)
+        review: str = Field(description="A brief review of the movie")
+        genres: List[str] = Field(description="List of genres for the movie")
 
-    # Custom validator for name field
-    @validator('name')
-    def name_must_not_be_empty(cls, v):
-        if not v.strip():
-            raise ValueError('Name cannot be empty')
-        return v.title()  # Convert to title case
+    # In a real application with Pydantic AI, you would use it like this:
+    # (This is just an example and won't run without the actual library)
+    '''
+    from pydantic_ai import AI
 
-    # Custom validator for tags field
-    @validator('tags')
-    def tags_must_be_unique(cls, v):
-        if len(v) != len(set(v)):
-            raise ValueError('Tags must be unique')
-        return v
+    # Initialize AI with your API key
+    ai = AI(api_key="your_api_key")
 
-try:
-    # Valid product
-    product = Product(id=1, name="laptop", price=999.99, tags=["electronics", "computers"])
-    print(f"\nProduct created: {product}")
+    # Extract structured data from text
+    text = "I watched The Shawshank Redemption directed by Frank Darabont. \
+            This 1994 drama is a masterpiece that deserves a solid 9.5/10. \
+            It tells the story of a man's experience in prison and his eventual escape. \
+            It's both a drama and a crime film with elements of friendship and hope."
 
-    # Invalid product (empty name)
-    invalid_product = Product(id=2, name="", price=10.99)
-except ValidationError as e:
-    print(f"Product validation error: {e}")
+    # Extract structured data using the MovieReview model
+    result = ai.extract(text, MovieReview)
+    print(f"Extracted movie review: {result}")
+    '''
 
-# Nested models
-class Address(BaseModel):
-    street: str
-    city: str
-    country: str
-    postal_code: str
-
-class Customer(BaseModel):
-    id: int
-    name: str
-    addresses: List[Address]  # List of Address models
-    primary_address: Optional[Address] = None  # Optional nested model
-
-# Create a customer with nested address models
-address1 = Address(street="123 Main St", city="New York", country="USA", postal_code="10001")
-address2 = Address(street="456 Elm St", city="San Francisco", country="USA", postal_code="94107")
-
-customer = Customer(
-    id=1,
-    name="Jane Smith",
-    addresses=[address1, address2],
-    primary_address=address1
-)
-
-print(f"\nCustomer created: {customer}")
-print(f"Primary address city: {customer.primary_address.city}")
-
-# ===== Pydantic AI =====
-print("\n--- Pydantic AI ---")
-
-# Pydantic AI is an extension of Pydantic for working with AI models
-# It provides tools for structured extraction from LLM outputs
-
-print("Pydantic AI is a framework for building AI agents with structured data")
-print("Key features include:")
-print("1. Structured extraction from LLM outputs")
-print("2. Function calling and tool usage")
-print("3. Agent frameworks for complex workflows")
-print("4. Type safety and validation")
-
-# Example of a Pydantic AI model (conceptual, not runnable without actual AI backend)
-class MovieReview(BaseModel):
-    """A model for extracting structured movie review data from text."""
-    title: str = Field(description="The title of the movie")
-    director: str = Field(description="The director of the movie")
-    year: int = Field(description="The year the movie was released")
-    rating: float = Field(description="Rating from 0-10", ge=0, le=10)
-    review: str = Field(description="A brief review of the movie")
-    genres: List[str] = Field(description="List of genres for the movie")
-
-# In a real application with Pydantic AI, you would use it like this:
-# (This is just an example and won't run without the actual library)
-'''
-from pydantic_ai import AI
-
-# Initialize AI with your API key
-ai = AI(api_key="your_api_key")
-
-# Extract structured data from text
-text = "I watched The Shawshank Redemption directed by Frank Darabont. \
-        This 1994 drama is a masterpiece that deserves a solid 9.5/10. \
-        It tells the story of a man's experience in prison and his eventual escape. \
-        It's both a drama and a crime film with elements of friendship and hope."
-
-# Extract structured data using the MovieReview model
-result = ai.extract(text, MovieReview)
-print(f"Extracted movie review: {result}")
-'''
-
-print("\nExample of what extracted data might look like:")
-print('''
-{
-    "title": "The Shawshank Redemption",
-    "director": "Frank Darabont",
-    "year": 1994,
-    "rating": 9.5,
-    "review": "A masterpiece that tells the story of a man's experience in prison and his eventual escape.",
-    "genres": ["Drama", "Crime"]
-}
-''')
-
-# Function calling with Pydantic AI
-print("\nPydantic AI also supports function calling:")
-
-class SearchQuery(BaseModel):
-    query: str = Field(description="The search query")
-    max_results: int = Field(description="Maximum number of results to return", default=5)
-
-class WeatherQuery(BaseModel):
-    location: str = Field(description="The location to get weather for")
-    unit: str = Field(description="Temperature unit (celsius/fahrenheit)", default="celsius")
-
-# Example code (not runnable without the actual library):
-'''
-# Define functions that can be called by the AI
-def search(query: SearchQuery) -> List[str]:
-    # In a real application, this would call a search API
-    return [f"Result {i} for {query.query}" for i in range(query.max_results)]
-
-def get_weather(query: WeatherQuery) -> Dict[str, Union[str, float]]:
-    # In a real application, this would call a weather API
-    return {
-        "location": query.location,
-        "temperature": 22.5 if query.unit == "celsius" else 72.5,
-        "condition": "Sunny",
-        "unit": query.unit
+    print("\nExample of what extracted data might look like:")
+    print('''
+    {
+        "title": "The Shawshank Redemption",
+        "director": "Frank Darabont",
+        "year": 1994,
+        "rating": 9.5,
+        "review": "A masterpiece that tells the story of a man's experience in prison and his eventual escape.",
+        "genres": ["Drama", "Crime"]
     }
+    ''')
 
-# Register functions with the AI
-ai.register_function(search)
-ai.register_function(get_weather)
+    # Function calling with Pydantic AI
+    print("\nPydantic AI also supports function calling:")
 
-# Let the AI decide which function to call based on user input
-user_input = "What's the weather like in New York?"
-result = ai.run(user_input)
-print(f"AI response: {result}")
-'''
+    class SearchQuery(BaseModel):
+        query: str = Field(description="The search query")
+        max_results: int = Field(description="Maximum number of results to return", default=5)
 
-print("Example of what a function call result might look like:")
-print('''
-{
-    "location": "New York",
-    "temperature": 22.5,
-    "condition": "Sunny",
-    "unit": "celsius"
-}
-''')
+    class WeatherQuery(BaseModel):
+        location: str = Field(description="The location to get weather for")
+        unit: str = Field(description="Temperature unit (celsius/fahrenheit)", default="celsius")
 
-# Agent frameworks with Pydantic AI
-print("\nPydantic AI provides agent frameworks for complex workflows:")
-print("- Agents can use tools and make decisions")
-print("- Chain multiple steps together")
-print("- Handle complex reasoning tasks")
-print("- Maintain state across interactions")
+    # Example code (not runnable without the actual library):
+    '''
+    # Define functions that can be called by the AI
+    def search(query: SearchQuery) -> List[str]:
+        # In a real application, this would call a search API
+        return [f"Result {i} for {query.query}" for i in range(query.max_results)]
 
-# Example of a simple agent (conceptual, not runnable)
-'''
-from pydantic_ai import Agent, Tool
+    def get_weather(query: WeatherQuery) -> Dict[str, Union[str, float]]:
+        # In a real application, this would call a weather API
+        return {
+            "location": query.location,
+            "temperature": 22.5 if query.unit == "celsius" else 72.5,
+            "condition": "Sunny",
+            "unit": query.unit
+        }
 
-# Define tools the agent can use
-search_tool = Tool(search, description="Search for information")
-weather_tool = Tool(get_weather, description="Get weather information")
+    # Register functions with the AI
+    ai.register_function(search)
+    ai.register_function(get_weather)
 
-# Create an agent with the tools
-agent = Agent(tools=[search_tool, weather_tool])
+    # Let the AI decide which function to call based on user input
+    user_input = "What's the weather like in New York?"
+    result = ai.run(user_input)
+    print(f"AI response: {result}")
+    '''
 
-# Run the agent with a user query
-result = agent.run("I'm planning a trip to Paris next week. What's the weather forecast and what are some must-see attractions?")
-print(f"Agent response: {result}")
-'''
+    print("Example of what a function call result might look like:")
+    print('''
+    {
+        "location": "New York",
+        "temperature": 22.5,
+        "condition": "Sunny",
+        "unit": "celsius"
+    }
+    ''')
 
-print("\nPydantic AI is particularly useful for:")
-print("1. Building chatbots with structured responses")
-print("2. Creating AI assistants that can take actions")
-print("3. Extracting structured data from unstructured text")
-print("4. Implementing complex decision-making workflows")
-print("5. Ensuring type safety in AI applications")
+    # Agent frameworks with Pydantic AI
+    print("\nPydantic AI provides agent frameworks for complex workflows:")
+    print("- Agents can use tools and make decisions")
+    print("- Chain multiple steps together")
+    print("- Handle complex reasoning tasks")
+    print("- Maintain state across interactions")
+
+    # Example of a simple agent (conceptual, not runnable)
+    '''
+    from pydantic_ai import Agent, Tool
+
+    # Define tools the agent can use
+    search_tool = Tool(search, description="Search for information")
+    weather_tool = Tool(get_weather, description="Get weather information")
+
+    # Create an agent with the tools
+    agent = Agent(tools=[search_tool, weather_tool])
+
+    # Run the agent with a user query
+    result = agent.run("I'm planning a trip to Paris next week. What's the weather forecast and what are some must-see attractions?")
+    print(f"Agent response: {result}")
+    '''
+
+    print("\nPydantic AI is particularly useful for:")
+    print("1. Building chatbots with structured responses")
+    print("2. Creating AI assistants that can take actions")
+    print("3. Extracting structured data from unstructured text")
+    print("4. Implementing complex decision-making workflows")
+    print("5. Ensuring type safety in AI applications")
+
+except ImportError:
+    print("Pydantic is not installed. To install it, run: pip install pydantic")
+    print("The Pydantic section has been skipped.")
+    print("\nPydantic is a data validation and settings management library using Python type annotations.")
+    print("It would be demonstrated here if installed.")
+except Exception as e:
+    print(f"Error in Pydantic section: {e}")
+    print("Continuing with the rest of the tutorial...")
 
 ##############################################################################
 # CONCLUSION
