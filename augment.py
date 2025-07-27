@@ -3,9 +3,17 @@
 Python Tutorial: From Basics to Advanced
 
 This file serves as a comprehensive tutorial covering Python from basic to advanced concepts,
-including the latest features from Python 3.10 through 3.13.
+including the latest features from Python 3.10 through 3.14 (as of July 2025).
 
 Each section contains executable code examples with detailed comments explaining the concepts.
+The tutorial is regularly updated to include the most current Python features and best practices.
+
+Version Coverage:
+- Python 3.10: Pattern matching, improved error messages
+- Python 3.11: Performance improvements, exception groups, Self type
+- Python 3.12: F-string enhancements, new generics syntax
+- Python 3.13: Free-threading, JIT compiler, mobile support, new REPL
+- Python 3.14: JIT improvements, threading enhancements (in development)
 """
 
 # Table of Contents:
@@ -29,9 +37,10 @@ Each section contains executable code examples with detailed comments explaining
 #    - Functional Programming Concepts
 # 4. Modern Python Features
 #    - Python 3.10: Structural Pattern Matching, Improved Error Messages
-#    - Python 3.11: Performance Improvements, Exception Groups
+#    - Python 3.11: Performance Improvements, Exception Groups, Self Type
 #    - Python 3.12: F-string Improvements, New Type Annotation Syntax
-#    - Python 3.13: JIT Compiler, Free-Threaded Mode, New REPL
+#    - Python 3.13: Free-Threading, JIT Compiler, Mobile Support, New REPL
+#    - Python 3.14: JIT Maturation, Threading Enhancements (in development)
 # 5. Pydantic and Pydantic AI
 
 ##############################################################################
@@ -1102,10 +1111,10 @@ def factorial_tail(n, accumulator=1):
 print(f"Factorial of 5 (tail recursion): {factorial_tail(5)}")
 
 ##############################################################################
-# SECTION 4: MODERN PYTHON FEATURES (3.10-3.13)
+# SECTION 4: MODERN PYTHON FEATURES (3.10-3.14)
 ##############################################################################
 
-print("\n=== SECTION 4: MODERN PYTHON FEATURES (3.10-3.13) ===")
+print("\n=== SECTION 4: MODERN PYTHON FEATURES (3.10-3.14) ===")
 
 # ===== Python 3.10 Features =====
 print("\n--- Python 3.10 Features ---")
@@ -1324,39 +1333,632 @@ point2: Point2D = (3.0, 4.0)
 print(f"Distance between points: {distance(point1, point2)}")
 
 # ===== Python 3.13 Features =====
-print("\n--- Python 3.13 Features ---")
+print("\n--- Python 3.13 Features (Released October 2024) ---")
 
-# JIT (Just-In-Time) compiler
-print("Python 3.13 introduces an experimental JIT compiler")
-print("- Automatically optimizes hot code paths")
-print("- Can significantly improve performance for CPU-bound code")
-print("- No code changes required to benefit from it")
+# Free-threaded CPython (PEP 703) - Most significant feature
+print("🚀 Free-threaded CPython (PEP 703) - EXPERIMENTAL")
+print("- Removes the Global Interpreter Lock (GIL) when built with --disable-gil")
+print("- Enables true parallel execution of Python threads")
+print("- Requires special interpreter build: python3.13t")
+print("- Significant performance gains for multi-threaded CPU-bound tasks")
+print("- Still experimental - use with caution in production")
 
-# Free-threaded mode (PEP 703)
-print("\nPython 3.13 introduces experimental free-threaded mode")
-print("- Removes the Global Interpreter Lock (GIL)")
-print("- Allows true parallel execution of Python threads")
-print("- Can be enabled with a command-line flag")
-print("- Improves performance for multi-threaded CPU-bound tasks")
+# Example: CPU-bound task that benefits from free-threading
+import threading
+import time
+import sys
 
-# New interactive interpreter (REPL)
-print("\nPython 3.13 includes a new interactive interpreter (REPL)")
-print("- Syntax highlighting")
-print("- Better multiline editing")
-print("- Improved tab completion")
-print("- Command history with search")
+def cpu_intensive_task(n: int, result_list: list, index: int) -> None:
+    """A CPU-intensive task that benefits from parallel execution."""
+    total = 0
+    for i in range(n):
+        total += i ** 2
+    result_list[index] = total
 
-# Enhanced error messages
-print("\nPython 3.13 further improves error messages")
-print("- More precise error locations")
-print("- Better suggestions for fixing errors")
-print("- More helpful context in tracebacks")
+def demonstrate_free_threading():
+    """Demonstrate potential benefits of free-threading in Python 3.13."""
+    print("\nFree-threading demonstration:")
+    
+    # Check if we're running with free-threading enabled
+    gil_enabled = sys._is_gil_enabled() if hasattr(sys, '_is_gil_enabled') else True
+    print(f"GIL enabled: {gil_enabled}")
+    
+    # Run CPU-intensive tasks
+    n_tasks = 4
+    n_iterations = 1000000
+    results = [0] * n_tasks
+    
+    # Measure time with threading
+    start_time = time.time()
+    threads = []
+    
+    for i in range(n_tasks):
+        thread = threading.Thread(target=cpu_intensive_task, args=(n_iterations, results, i))
+        threads.append(thread)
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
+    
+    threading_time = time.time() - start_time
+    print(f"Threading time: {threading_time:.3f}s")
+    print(f"Results sum: {sum(results)}")
+    
+    if not gil_enabled:
+        print("✅ Running with free-threading - true parallelism achieved!")
+    else:
+        print("ℹ️ Running with GIL - threads run sequentially for CPU-bound tasks")
 
-# Improved typing features
-print("\nPython 3.13 includes typing improvements")
-print("- Type parameter defaults")
-print("- Better support for variadic generics")
-print("- More precise type checking")
+demonstrate_free_threading()
+
+# JIT Compiler - Experimental
+print("\n⚡ Experimental JIT Compiler (Copy-and-Patch)")
+print("- Highly experimental just-in-time compiler")
+print("- Uses copy-and-patch compilation technique") 
+print("- Must be enabled explicitly (not default)")
+print("- Can provide significant speedups for certain workloads")
+print("- Still in early development - expect changes")
+
+def fibonacci_jit_demo(n: int) -> int:
+    """Function that could benefit from JIT compilation."""
+    if n <= 1:
+        return n
+    return fibonacci_jit_demo(n-1) + fibonacci_jit_demo(n-2)
+
+# Demonstrate potential JIT benefits (conceptual)
+print("\nJIT Compiler demonstration:")
+print("To enable JIT in Python 3.13:")
+print("  python3.13 -X jit your_script.py")
+print("Or set environment variable: PYTHON_JIT=1")
+
+# Simple benchmark function that could benefit from JIT
+def jit_benchmark_function(iterations: int) -> float:
+    """Function with tight loops that benefits from JIT."""
+    total = 0.0
+    for i in range(iterations):
+        total += (i * 2.5) ** 0.5
+    return total
+
+result = jit_benchmark_function(100000)
+print(f"Benchmark result: {result:.2f}")
+print("Note: With JIT enabled, this function could run significantly faster")
+
+# New Interactive REPL
+print("\n🎯 New Interactive Interpreter (PyREPL)")
+print("- Complete rewrite of the interactive shell")
+print("- Syntax highlighting with color support")
+print("- Improved multiline editing capabilities")
+print("- Enhanced tab completion and introspection")
+print("- Command history with search functionality")
+print("- Better error handling and display")
+
+# Demonstrate REPL features (conceptual since we can't show interactive features in a script)
+print("\nPyREPL features demonstration:")
+print("1. Syntax highlighting: Keywords, strings, and numbers are colored")
+print("2. Better multiline editing: Improved indentation and bracket matching")
+print("3. Enhanced tab completion: More intelligent suggestions")
+print("4. History search: Ctrl+R for reverse search through command history")
+
+# iOS and Android Support
+print("\n📱 Mobile Platform Support")
+print("- Official support for iOS and Android platforms")
+print("- PEP 730: iOS support in the standard library")
+print("- PEP 738: Android support improvements")
+print("- Enhanced mobile app development capabilities")
+print("- Better integration with mobile development workflows")
+
+# Example: Platform detection for mobile platforms
+import platform
+
+def detect_mobile_platform():
+    """Detect if running on mobile platform (Python 3.13+)."""
+    system = platform.system().lower()
+    machine = platform.machine().lower()
+    
+    # Check for iOS
+    if system == 'darwin' and ('iphone' in machine or 'ipad' in machine):
+        return 'iOS'
+    elif system == 'ios':  # Direct iOS detection in Python 3.13+
+        return 'iOS'
+    
+    # Check for Android
+    if 'android' in system or hasattr(sys, 'getandroidapilevel'):
+        return 'Android'
+    
+    return 'Desktop/Server'
+
+mobile_platform = detect_mobile_platform()
+print(f"Detected platform: {mobile_platform}")
+
+# Mobile-specific code example
+if mobile_platform != 'Desktop/Server':
+    print(f"Running on {mobile_platform} - can use mobile-specific features")
+    # Example: Access mobile-specific APIs (conceptual)
+    print("- Access to device sensors")
+    print("- Integration with mobile notifications")
+    print("- Touch event handling")
+
+# Enhanced Error Messages
+print("\n🔍 Enhanced Error Messages")
+print("- More precise error location indicators")
+print("- Better suggestions for fixing common errors")
+print("- Improved traceback formatting and context")
+print("- More helpful hints for beginners")
+
+# Example: Enhanced error message demonstration
+def demonstrate_enhanced_errors():
+    """Show improved error messages in Python 3.13."""
+    try:
+        # This will show enhanced error information in Python 3.13+
+        data = {'name': 'Alice', 'age': 30}
+        # Intentionally access a non-existent key
+        # print(data['address'])  # Would show: "Did you mean 'age'?"
+        
+        # Intentionally use wrong method
+        numbers = [1, 2, 3, 4, 5]
+        # result = numbers.append(6).sort()  # Would suggest chaining fix
+        
+        print("Error message improvements (examples commented to avoid actual errors):")
+        print("- KeyError now suggests similar keys")
+        print("- AttributeError shows available methods")
+        print("- SyntaxError points to exact problematic character")
+        print("- TypeError includes helpful suggestions")
+        
+    except Exception as e:
+        print(f"Enhanced error: {e}")
+
+demonstrate_enhanced_errors()
+
+# Typing Improvements
+print("\n📝 Typing System Enhancements")
+print("- Type parameter defaults (PEP 696)")
+print("- Improved support for variadic generics")
+print("- Better generic type inference")
+print("- Enhanced runtime type checking capabilities")
+
+# Type parameter defaults (PEP 696)
+from typing import TypeVar, Generic, List
+
+# Default type parameters in Python 3.13+
+T = TypeVar('T')  # In Python 3.13+, can specify default=str
+
+class Container(Generic[T]):  # Compatible syntax
+    """Generic container with type parameter."""
+    def __init__(self, value: T) -> None:
+        self.value = value
+    
+    def get(self) -> T:
+        return self.value
+    
+    def set(self, value: T) -> None:
+        self.value = value
+
+# Usage examples
+container_str = Container[str]("hello")  # T explicitly set to str
+container_int = Container[int](42)       # T explicitly set to int
+
+print(f"String container: {container_str.get()}")
+print(f"Int container: {container_int.get()}")
+
+# Note: In Python 3.13+, you can use the new syntax:
+# class Container[T = str]:  # Default type parameter
+# T = TypeVar('T', default=str)  # Default type variable
+
+# Improved variadic generics
+from typing import TypeVarTuple, Unpack
+
+# Variadic generics for functions with variable arguments
+Ts = TypeVarTuple('Ts')
+
+def process_args(*args: Unpack[Ts]) -> tuple[Unpack[Ts]]:
+    """Function that preserves argument types."""
+    return args
+
+# Type-safe variable arguments
+result1 = process_args(1, "hello", 3.14)  # Returns tuple[int, str, float]
+result2 = process_args(True, [1, 2, 3])   # Returns tuple[bool, list[int]]
+
+print(f"Variadic result 1: {result1}")
+print(f"Variadic result 2: {result2}")
+
+# Security and Performance
+print("\n🔒 Security and Performance Improvements")
+print("- Enhanced security features and CVE fixes")
+print("- Memory usage optimizations")
+print("- Startup time improvements")
+print("- Better garbage collection performance")
+
+# Performance monitoring example
+import gc
+import tracemalloc
+
+def demonstrate_performance_improvements():
+    """Show performance monitoring capabilities."""
+    # Start memory tracing
+    tracemalloc.start()
+    
+    # Create some objects to demonstrate memory usage
+    large_list = [i * i for i in range(10000)]
+    large_dict = {f"key_{i}": f"value_{i}" for i in range(5000)}
+    
+    # Get current memory usage
+    current, peak = tracemalloc.get_traced_memory()
+    print(f"Current memory usage: {current / 1024 / 1024:.2f} MB")
+    print(f"Peak memory usage: {peak / 1024 / 1024:.2f} MB")
+    
+    # Garbage collection statistics
+    gc_stats = gc.get_stats()
+    print(f"GC collections: {sum(stat['collections'] for stat in gc_stats)}")
+    
+    tracemalloc.stop()
+
+demonstrate_performance_improvements()
+
+# Standard Library Updates
+print("\n📚 Standard Library Updates")
+print("- pathlib improvements for better path handling")
+print("- Enhanced warnings system with new filters")
+print("- Improved docstring parsing capabilities")
+print("- Various module updates and bug fixes")
+
+# Enhanced pathlib features
+from pathlib import Path
+import warnings
+
+def demonstrate_stdlib_improvements():
+    """Show standard library improvements in Python 3.13."""
+    
+    # Enhanced pathlib operations
+    current_path = Path(".")
+    print(f"Current directory: {current_path.resolve()}")
+    
+    # Better path manipulation (Python 3.13+ improvements)
+    temp_path = Path("/tmp") / "example.txt"
+    print(f"Constructed path: {temp_path}")
+    
+    # Enhanced warnings system
+    with warnings.catch_warnings(record=True) as warning_list:
+        warnings.simplefilter("always")
+        
+        # Trigger a warning
+        warnings.warn("This is a test warning", UserWarning)
+        
+        if warning_list:
+            w = warning_list[0]
+            print(f"Caught warning: {w.message}")
+            print(f"Warning category: {w.category.__name__}")
+    
+    # Improved docstring handling
+    def example_function():
+        """
+        This is an example function.
+        
+        Returns:
+            None: This function doesn't return anything.
+        """
+        pass
+    
+    # In Python 3.13+, docstring parsing is more robust
+    print(f"Function docstring: {example_function.__doc__}")
+
+demonstrate_stdlib_improvements()
+
+# ===== Python 3.14 Features =====
+print("\n--- Python 3.14 Features (Expected October 2025) ---")
+print("🔮 Note: As of July 2025, Python 3.14 is in development/beta")
+
+# JIT Compiler Improvements
+print("\n⚡ JIT Compiler Maturation")
+print("- Copy-and-patch JIT compiler is more stable")
+print("- Better optimization heuristics")
+print("- Reduced compilation overhead")
+print("- Improved compatibility with existing code")
+print("- May become enabled by default in certain scenarios")
+
+# Enhanced JIT examples (conceptual for Python 3.14)
+def demonstrate_jit_improvements():
+    """Demonstrate expected JIT improvements in Python 3.14."""
+    print("\nJIT Compiler Improvements in Python 3.14:")
+    
+    # Example: Function that benefits from JIT optimization
+    def matrix_multiply(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
+        """Matrix multiplication that benefits from JIT compilation."""
+        rows_a, cols_a = len(a), len(a[0])
+        rows_b, cols_b = len(b), len(b[0])
+        
+        if cols_a != rows_b:
+            raise ValueError("Incompatible matrix dimensions")
+        
+        result = [[0.0 for _ in range(cols_b)] for _ in range(rows_a)]
+        
+        for i in range(rows_a):
+            for j in range(cols_b):
+                for k in range(cols_a):
+                    result[i][j] += a[i][k] * b[k][j]
+        
+        return result
+    
+    # Small matrices for demonstration
+    matrix_a = [[1.0, 2.0], [3.0, 4.0]]
+    matrix_b = [[5.0, 6.0], [7.0, 8.0]]
+    
+    result = matrix_multiply(matrix_a, matrix_b)
+    print(f"Matrix multiplication result: {result}")
+    print("✨ In Python 3.14, this computation would be JIT-compiled for better performance")
+    
+    # JIT compilation status check (conceptual)
+    print("\nJIT Status (Python 3.14 features):")
+    print("- Automatic JIT compilation for hot code paths")
+    print("- Better integration with type hints for optimization")
+    print("- Reduced compilation latency")
+    print("- Improved memory usage during compilation")
+
+demonstrate_jit_improvements()
+
+# Further GIL Improvements
+print("\n🔄 Free-Threading Enhancements")
+print("- More libraries compatible with free-threaded mode")
+print("- Better performance in free-threaded builds")
+print("- Reduced overhead when GIL is disabled")
+print("- Improved debugging tools for threaded code")
+
+# Enhanced free-threading examples
+import concurrent.futures
+import asyncio
+from typing import Callable, Any
+
+def demonstrate_enhanced_free_threading():
+    """Show improved free-threading capabilities in Python 3.14."""
+    print("\nEnhanced Free-Threading in Python 3.14:")
+    
+    # Better thread pool performance
+    def parallel_task(n: int) -> int:
+        """CPU-intensive task that benefits from true parallelism."""
+        return sum(i ** 2 for i in range(n))
+    
+    # Using ThreadPoolExecutor with improved free-threading
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        tasks = [1000, 2000, 3000, 4000]
+        futures = [executor.submit(parallel_task, task) for task in tasks]
+        results = [future.result() for future in concurrent.futures.as_completed(futures)]
+    
+    print(f"Parallel task results: {sorted(results)}")
+    print("✨ In Python 3.14 with free-threading, these tasks run truly in parallel")
+    
+    # Enhanced debugging for threaded code
+    print("\nImproved Threading Debugging (Python 3.14):")
+    print("- Better thread state introspection")
+    print("- Enhanced deadlock detection")
+    print("- Improved thread performance profiling")
+    print("- Better integration with debuggers")
+
+demonstrate_enhanced_free_threading()
+
+# Performance Improvements
+print("\n🚀 Performance Optimizations")
+print("- Further interpreter optimizations")
+print("- Improved memory management")
+print("- Faster startup times")
+print("- Better optimization of common patterns")
+
+# Performance optimization examples
+def demonstrate_performance_optimizations():
+    """Show performance improvements expected in Python 3.14."""
+    print("\nPerformance Optimizations in Python 3.14:")
+    
+    # Optimized comprehensions
+    large_range = 100000
+    
+    # List comprehension with better optimization
+    squared_evens = [x ** 2 for x in range(large_range) if x % 2 == 0]
+    print(f"Generated {len(squared_evens)} squared even numbers")
+    
+    # Dictionary comprehension with improved performance
+    number_mapping = {i: f"number_{i}" for i in range(1000)}
+    print(f"Created dictionary with {len(number_mapping)} entries")
+    
+    # Set operations with better optimization
+    set_a = {i for i in range(5000)}
+    set_b = {i for i in range(2500, 7500)}
+    intersection = set_a & set_b
+    print(f"Set intersection size: {len(intersection)}")
+    
+    print("✨ All these operations are faster in Python 3.14 due to:")
+    print("  - Better memory allocation strategies")
+    print("  - Optimized bytecode for common patterns")
+    print("  - Improved garbage collection algorithms")
+
+demonstrate_performance_optimizations()
+
+# Language Features
+print("\n🔧 Language Enhancements")
+print("- Potential new syntax features (TBD)")
+print("- Enhanced pattern matching capabilities")
+print("- Improved comprehension performance")
+print("- Better support for modern Python idioms")
+
+# Enhanced language features (conceptual)
+def demonstrate_language_enhancements():
+    """Show potential language enhancements in Python 3.14."""
+    print("\nLanguage Enhancements in Python 3.14:")
+    
+    # Enhanced pattern matching (building on Python 3.10)
+    def process_data_enhanced(data: Any) -> str:
+        """Enhanced pattern matching with more features."""
+        match data:
+            case int(x) if x > 100:
+                return f"Large integer: {x}"
+            case int(x) if x > 0:
+                return f"Positive integer: {x}"
+            case str(s) if len(s) > 10:
+                return f"Long string: {s[:10]}..."
+            case str(s):
+                return f"Short string: {s}"
+            case list([first, *rest]) if len(rest) > 5:
+                return f"Long list starting with {first}"
+            case list(items):
+                return f"List with {len(items)} items"
+            case dict(data) if "priority" in data:
+                return f"Priority data: {data['priority']}"
+            case _:
+                return f"Unknown data type: {type(data)}"
+    
+    # Test enhanced pattern matching
+    test_cases = [
+        150,
+        5,
+        "This is a very long string for testing",
+        "short",
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        [1, 2, 3],
+        {"priority": "high", "task": "complete"},
+        {"normal": "data"},
+        3.14
+    ]
+    
+    for case in test_cases:
+        result = process_data_enhanced(case)
+        print(f"  {case} -> {result}")
+    
+    # Improved comprehension syntax (conceptual)
+    print("\nImproved comprehensions (potential Python 3.14 features):")
+    
+    # Better error handling in comprehensions
+    def safe_divide(a: float, b: float) -> float | None:
+        return a / b if b != 0 else None
+    
+    numbers = [1, 2, 0, 4, 5]
+    safe_results = [result for x in numbers if (result := safe_divide(10, x)) is not None]
+    print(f"Safe division results: {safe_results}")
+
+demonstrate_language_enhancements()
+
+# Standard Library Evolution
+print("\n📖 Standard Library Updates")
+print("- Continued pathlib enhancements")
+print("- New modules for modern development")
+print("- Deprecated module removals")
+print("- Better integration with external tools")
+
+# Enhanced standard library features
+def demonstrate_stdlib_evolution():
+    """Show standard library evolution in Python 3.14."""
+    print("\nStandard Library Evolution in Python 3.14:")
+    
+    # Enhanced pathlib with more methods
+    from pathlib import Path
+    import tempfile
+    import json
+    
+    # Better path operations (conceptual Python 3.14 features)
+    current_dir = Path.cwd()
+    print(f"Current directory: {current_dir}")
+    
+    # Enhanced file operations
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        sample_data = {"version": "3.14", "features": ["JIT", "free-threading"]}
+        json.dump(sample_data, f)
+        temp_path = Path(f.name)
+    
+    # Better path manipulation (enhanced in 3.14)
+    print(f"Temporary file: {temp_path}")
+    print(f"File size: {temp_path.stat().st_size} bytes")
+    
+    # Clean up
+    temp_path.unlink()
+    
+    # New modules for modern development (conceptual)
+    print("\nNew standard library modules (Python 3.14):")
+    print("- Enhanced async utilities")
+    print("- Better data validation tools")
+    print("- Improved debugging modules")
+    print("- Modern web development helpers")
+
+demonstrate_stdlib_evolution()
+
+# Developer Experience
+print("\n👩‍💻 Developer Experience")
+print("- Enhanced debugging capabilities")
+print("- Better profiling tools")
+print("- Improved IDE integration")
+print("- More helpful development warnings")
+
+# Enhanced developer experience
+def demonstrate_developer_experience():
+    """Show improved developer experience in Python 3.14."""
+    print("\nDeveloper Experience Improvements in Python 3.14:")
+    
+    # Better debugging with enhanced tracebacks
+    def nested_function_call():
+        def inner_function():
+            def deepest_function():
+                # In Python 3.14, this would show enhanced stack traces
+                data = {"key": "value"}
+                return data["nonexistent_key"]  # This would cause KeyError
+            return deepest_function()
+        return inner_function()
+    
+    try:
+        # nested_function_call()  # Commented to avoid actual error
+        pass
+    except KeyError:
+        print("Enhanced traceback would show:")
+        print("  - Exact line numbers with context")
+        print("  - Variable values at each frame")
+        print("  - Suggested fixes for common errors")
+        print("  - Better formatting for readability")
+    
+    # Improved profiling capabilities
+    import cProfile
+    import pstats
+    import io
+    
+    def sample_function():
+        """Function to profile."""
+        return sum(i ** 2 for i in range(1000))
+    
+    # Enhanced profiling (conceptual Python 3.14 features)
+    print("\nEnhanced Profiling in Python 3.14:")
+    profiler = cProfile.Profile()
+    profiler.enable()
+    
+    result = sample_function()
+    
+    profiler.disable()
+    
+    # Better profiling output
+    s = io.StringIO()
+    ps = pstats.Stats(profiler, stream=s)
+    ps.print_stats()
+    
+    print(f"Function result: {result}")
+    print("✨ Python 3.14 profiling improvements:")
+    print("  - Better memory profiling integration")
+    print("  - Enhanced call graph visualization")
+    print("  - Improved IDE integration")
+    print("  - Real-time performance monitoring")
+
+demonstrate_developer_experience()
+
+print("\n📅 Note: Python 3.14 features are subject to change during development")
+print("Check the official Python documentation for the latest updates")
+
+# Preparing for Python 3.14
+print("\n🔮 Preparing for Python 3.14:")
+print("1. Start experimenting with Python 3.13 free-threading")
+print("2. Profile your code to identify JIT optimization opportunities")
+print("3. Update type hints for better optimization")
+print("4. Consider thread-safe design patterns")
+print("5. Stay updated with Python Enhancement Proposals (PEPs)")
+
+# Version Summary
+print("\n=== Python Version Summary ===")
+print("🐍 Python 3.10: Pattern matching, better error messages")
+print("🐍 Python 3.11: 25% performance boost, exception groups, Self type")
+print("🐍 Python 3.12: F-string improvements, new type syntax, generics")
+print("🐍 Python 3.13: Free-threading, JIT compiler, mobile support, new REPL")
+print("🐍 Python 3.14: JIT maturation, threading improvements (in development)")
+print("\n💡 Recommendation: Use Python 3.11+ for production, 3.13+ for experimentation")
 
 ##############################################################################
 # SECTION 5: PYDANTIC AND PYDANTIC AI
@@ -1618,11 +2220,19 @@ print("\nThis tutorial has covered Python from basic to advanced concepts, inclu
 print("- Basic syntax, data types, and control structures")
 print("- Object-oriented programming with classes and inheritance")
 print("- Advanced features like threading, asyncio, and generators")
-print("- Modern Python features from versions 3.10 through 3.13")
+print("- Modern Python features from versions 3.10 through 3.14")
 print("- Data validation and AI integration with Pydantic and Pydantic AI")
 
-print("\nPython continues to evolve with new features and improvements in each version.")
-print("The language's readability, extensive standard library, and vibrant ecosystem")
-print("make it an excellent choice for beginners and experts alike.")
+print("\nPython continues to evolve rapidly with new features and improvements in each version.")
+print("Recent developments like free-threading and JIT compilation show Python's commitment")
+print("to performance and modern computing paradigms. The language's readability, extensive")
+print("standard library, and vibrant ecosystem make it an excellent choice for beginners and")
+print("experts alike.")
+
+print("\n🔮 Looking Forward:")
+print("- Python 3.14 (October 2025) will bring JIT and threading maturation")
+print("- Mobile development support continues to improve")
+print("- Performance remains a key focus with ongoing optimizations")
+print("- The ecosystem continues to grow with modern tools and libraries")
 
 print("\nHappy coding!")
