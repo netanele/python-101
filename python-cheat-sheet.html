@@ -16,6 +16,7 @@
             line-height: 1.6;
             color: #333;
             background-color: #f5f5f5;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -23,6 +24,17 @@
             margin: 0 auto;
             background: white;
             min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Base Styles */
+        body.dark-theme {
+            background-color: #0d1117;
+            color: #e6edf3;
+        }
+
+        .dark-theme .container {
+            background: #0d1117;
         }
 
         header {
@@ -30,6 +42,33 @@
             color: white;
             padding: 2rem;
             text-align: center;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .theme-icon {
+            font-size: 1.2rem;
         }
 
         header h1 {
@@ -47,6 +86,7 @@
             background: #e8e8e8;
             border-bottom: 3px solid #306998;
             overflow-x: auto;
+            transition: all 0.3s ease;
         }
 
         .tab-button {
@@ -73,6 +113,27 @@
             border-bottom-color: #306998;
         }
 
+        /* Dark Mode Tab Styles */
+        .dark-theme .tabs {
+            background: #21262d;
+            border-bottom: 3px solid #58a6ff;
+        }
+
+        .dark-theme .tab-button {
+            color: #8b949e;
+        }
+
+        .dark-theme .tab-button:hover {
+            background: #30363d;
+            color: #58a6ff;
+        }
+
+        .dark-theme .tab-button.active {
+            background: #0d1117;
+            color: #58a6ff;
+            border-bottom-color: #58a6ff;
+        }
+
         .tab-content {
             display: none;
             padding: 2rem;
@@ -94,6 +155,7 @@
             margin-bottom: 1rem;
             border-bottom: 2px solid #FFD43B;
             padding-bottom: 0.5rem;
+            transition: all 0.3s ease;
         }
 
         h3 {
@@ -103,17 +165,40 @@
             background: #f8f9fa;
             padding: 0.5rem 1rem;
             border-left: 4px solid #306998;
+            transition: all 0.3s ease;
         }
 
         h4 {
             color: #555;
             font-size: 1.2rem;
             margin: 1rem 0 0.5rem 0;
+            transition: all 0.3s ease;
         }
 
         p {
             margin-bottom: 1rem;
             text-align: justify;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Typography */
+        .dark-theme h2 {
+            color: #58a6ff;
+            border-bottom: 2px solid #ffa657;
+        }
+
+        .dark-theme h3 {
+            color: #f0f6fc;
+            background: #21262d;
+            border-left: 4px solid #58a6ff;
+        }
+
+        .dark-theme h4 {
+            color: #f0f6fc;
+        }
+
+        .dark-theme p {
+            color: #e6edf3;
         }
 
         .code-block {
@@ -173,6 +258,105 @@
             color: #79c0ff;
         }
 
+        /* Light Theme Styles */
+        body.light-theme {
+            background-color: #ffffff;
+            color: #24292f;
+        }
+
+        .light-theme .container {
+            background: #ffffff;
+        }
+
+        .light-theme .code-block {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            color: #24292f;
+        }
+
+        .light-theme .code-block pre {
+            color: #24292f;
+        }
+
+        /* Light Theme Syntax Highlighting */
+        .light-theme .code-block .comment {
+            color: #6a737d;
+            font-style: italic;
+        }
+
+        .light-theme .code-block .keyword {
+            color: #d73a49;
+            font-weight: 600;
+        }
+
+        .light-theme .code-block .string {
+            color: #032f62;
+        }
+
+        .light-theme .code-block .number {
+            color: #005cc5;
+        }
+
+        .light-theme .code-block .function {
+            color: #6f42c1;
+        }
+
+        .light-theme .code-block .class {
+            color: #e36209;
+        }
+
+        .light-theme .code-block .variable {
+            color: #e36209;
+        }
+
+        .light-theme .code-block .operator {
+            color: #d73a49;
+        }
+
+        .light-theme .code-block .builtin {
+            color: #005cc5;
+        }
+
+        .light-theme .output {
+            background: #f1f8ff;
+            border-left: 4px solid #0366d6;
+            color: #0366d6;
+        }
+
+        .light-theme h2 {
+            color: #24292f;
+        }
+
+        .light-theme h3 {
+            color: #24292f;
+            background: #f6f8fa;
+            border-left: 4px solid #0366d6;
+        }
+
+        .light-theme h4 {
+            color: #24292f;
+        }
+
+        .light-theme .tabs {
+            background: #f6f8fa;
+            border-bottom: 3px solid #0366d6;
+        }
+
+        .light-theme .tab-button {
+            color: #586069;
+        }
+
+        .light-theme .tab-button:hover {
+            background: #e1e4e8;
+            color: #0366d6;
+        }
+
+        .light-theme .tab-button.active {
+            background: white;
+            color: #0366d6;
+            border-bottom-color: #0366d6;
+        }
+
         .output {
             background: #161b22;
             border-left: 4px solid #238636;
@@ -191,6 +375,7 @@
             padding: 1.5rem;
             margin: 1rem 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
 
         .version-badge {
@@ -201,6 +386,7 @@
             border-radius: 15px;
             font-size: 0.8rem;
             margin-left: 0.5rem;
+            transition: all 0.3s ease;
         }
 
         .highlight {
@@ -209,6 +395,7 @@
             border-radius: 4px;
             padding: 1rem;
             margin: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .concept-list {
@@ -216,6 +403,7 @@
             border-left: 4px solid #28a745;
             padding: 1rem;
             margin: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .concept-list ul {
@@ -237,6 +425,7 @@
             border-radius: 4px;
             padding: 1rem;
             margin: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .info {
@@ -245,6 +434,7 @@
             border-radius: 4px;
             padding: 1rem;
             margin: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .footer {
@@ -253,6 +443,48 @@
             text-align: center;
             padding: 2rem;
             margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Content Boxes */
+        .dark-theme .feature-box {
+            background: linear-gradient(135deg, #21262d 0%, #30363d 100%);
+            border: 1px solid #30363d;
+            color: #e6edf3;
+        }
+
+        .dark-theme .version-badge {
+            background: #58a6ff;
+            color: #0d1117;
+        }
+
+        .dark-theme .highlight {
+            background: #332B00;
+            border: 1px solid #7c6d00;
+            color: #e6edf3;
+        }
+
+        .dark-theme .concept-list {
+            background: #21262d;
+            border-left: 4px solid #7ee787;
+            color: #e6edf3;
+        }
+
+        .dark-theme .warning {
+            background: #332B00;
+            border: 1px solid #7c6d00;
+            color: #e6edf3;
+        }
+
+        .dark-theme .info {
+            background: #0c2d6b;
+            border: 1px solid #1f6feb;
+            color: #e6edf3;
+        }
+
+        .dark-theme .footer {
+            background: #161b22;
+            color: #e6edf3;
         }
 
         @media (max-width: 768px) {
@@ -277,6 +509,10 @@
 <body>
     <div class="container">
         <header>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
             <h1>🐍 Python Tutorial: From Basics to Advanced</h1>
             <p>A comprehensive guide covering Python 3.10-3.14 features, including Pydantic and AI integration</p>
         </header>
@@ -1974,8 +2210,55 @@ print(f"Agent response: {result}")
             return code;
         }
 
+        // Theme management
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (body.classList.contains('dark-theme')) {
+                // Switch to light theme
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switch to dark theme
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme from localStorage
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+                body.classList.remove('dark-theme');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            } else {
+                // Default to dark theme
+                body.classList.add('dark-theme');
+                body.classList.remove('light-theme');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+
         // Add syntax highlighting and interactive features
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme
+            initializeTheme();
+            
             // Apply syntax highlighting to all code blocks
             const codeBlocks = document.querySelectorAll('.code-block pre');
             codeBlocks.forEach(block => {
@@ -1988,10 +2271,15 @@ print(f"Agent response: {result}")
             const codeBlockContainers = document.querySelectorAll('.code-block');
             codeBlockContainers.forEach(block => {
                 block.addEventListener('click', function() {
+                    // Get current theme for appropriate feedback colors
+                    const isDarkTheme = document.body.classList.contains('dark-theme');
+                    const feedbackColor = isDarkTheme ? '#161b22' : '#e1e4e8';
+                    const originalColor = isDarkTheme ? '#0d1117' : '#f6f8fa';
+                    
                     // Visual feedback for click
-                    this.style.backgroundColor = '#161b22';
+                    this.style.backgroundColor = feedbackColor;
                     setTimeout(() => {
-                        this.style.backgroundColor = '#0d1117';
+                        this.style.backgroundColor = originalColor;
                     }, 200);
                 });
             });
