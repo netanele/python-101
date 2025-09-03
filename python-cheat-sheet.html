@@ -436,16 +436,28 @@ print(f"Last fruit: {fruits[-1]}")
 
 # List methods
 fruits.append("orange")  # Add to the end
+print(f"After append: {fruits}")
+
 fruits.insert(1, "blueberry")  # Insert at specific position
+print(f"After insert: {fruits}")
+
 fruits.remove("banana")  # Remove by value
+print(f"After remove: {fruits}")
+
 popped_fruit = fruits.pop()  # Remove and return the last item
+print(f"Popped fruit: {popped_fruit}")
+print(f"After pop: {fruits}")
+
 fruits.sort()  # Sort in place
+print(f"After sort: {fruits}")
 
 # List comprehensions - concise way to create lists
 numbers = [1, 2, 3, 4, 5]
 squares = [x**2 for x in numbers]
-even_squares = [x**2 for x in numbers if x % 2 == 0]
+print(f"Original numbers: {numbers}")
 print(f"Squares: {squares}")
+
+even_squares = [x**2 for x in numbers if x % 2 == 0]
 print(f"Even squares: {even_squares}")</pre>
             </div>
 
@@ -472,7 +484,11 @@ print(f"Name: {person['name']}")
 
 # Dictionary methods
 person["email"] = "alice@example.com"  # Add new key-value pair
-phone = person.get("phone", "Not available")  # Get with default value
+print(f"After adding email: {person}")
+
+# Get with default value
+phone = person.get("phone", "Not available")
+print(f"Phone: {phone}")
 
 # Dictionary comprehension
 squared_numbers = {x: x**2 for x in range(1, 6)}
@@ -504,19 +520,27 @@ with open("example.txt", "w") as file:
     file.write("This is a test file.\n")
     file.write("Python is awesome!\n")
 
+print("File written successfully.")
+
 # Reading from a file
+print("\nReading the entire file:")
 with open("example.txt", "r") as file:
     content = file.read()
     print(content)
 
 # Reading line by line
+print("\nReading line by line:")
 with open("example.txt", "r") as file:
     for line in file:
         print(f"Line: {line.strip()}")  # strip() removes the newline character
 
 # Appending to a file
 with open("example.txt", "a") as file:
-    file.write("This line was appended.\n")</pre>
+    file.write("This line was appended.\n")
+
+print("\nFile after appending:")
+with open("example.txt", "r") as file:
+    print(file.read())</pre>
             </div>
 
             <div class="highlight">
@@ -559,9 +583,15 @@ class Person:
 person1 = Person("Alice", 30)
 person2 = Person("Bob", 25)
 
+print(f"Person 1: {person1.name}, {person1.age}")
+print(f"Person 2: {person2.name}, {person2.age}")
+print(f"Both are: {Person.species}")
+
 print(person1.greet())
 print(person2.greet())
-print(person1.celebrate_birthday())</pre>
+
+print(person1.celebrate_birthday())
+print(f"Person 1's new age: {person1.age}")</pre>
             </div>
 
             <h4>Special (Dunder) Methods</h4>
@@ -592,7 +622,8 @@ p2 = Point(3, 4)
 
 print(f"p1: {p1}")  # Uses __str__
 print(f"p1 + p2: {p1 + p2}")  # Uses __add__ and then __str__
-print(f"p1 == p2: {p1 == p2}")  # Uses __eq__</pre>
+print(f"p1 == p2: {p1 == p2}")  # Uses __eq__
+print(f"repr(p1): {repr(p1)}")  # Uses __repr__</pre>
             </div>
 
             <h3>Inheritance and Interfaces</h3>
@@ -826,7 +857,25 @@ say_hello("Alice")</pre>
 def say_hi(name):
     return f"Hi, {name}!"
 
-print(say_hi("Bob"))</pre>
+print(say_hi("Bob"))
+
+# Class as a decorator
+class CountCalls:
+    def __init__(self, func):
+        self.func = func
+        self.count = 0
+
+    def __call__(self, *args, **kwargs):
+        self.count += 1
+        print(f"Call count: {self.count}")
+        return self.func(*args, **kwargs)
+
+@CountCalls
+def say_bye(name):
+    return f"Bye, {name}!"
+
+print(say_bye("Charlie"))
+print(say_bye("Dave"))</pre>
             </div>
 
             <h4>Context Managers</h4>
@@ -861,7 +910,12 @@ def file_manager(filename, mode):
         file = open(filename, mode)
         yield file
     finally:
-        file.close()</pre>
+        file.close()
+
+# Using the contextlib-based context manager
+with file_manager("example.txt", "r") as file:
+    content = file.read()
+    print(f"First 10 characters (using contextlib): {content[:10]}...")</pre>
             </div>
 
             <div class="feature-box">
@@ -894,6 +948,7 @@ def worker(name, delay):
     print(f"Worker {name} finished after {delay} seconds")
 
 # Creating and starting threads
+print("\nStarting threads:")
 threads = []
 for i in range(3):
     # Create a thread
@@ -906,7 +961,33 @@ for i in range(3):
 for t in threads:
     t.join()
 
-print("All threads completed")</pre>
+print("All threads completed")
+
+# Thread with a class
+class WorkerThread(threading.Thread):
+    def __init__(self, name, delay):
+        super().__init__()
+        self.name = name
+        self.delay = delay
+
+    def run(self):
+        print(f"Worker {self.name} starting")
+        time.sleep(self.delay)
+        print(f"Worker {self.name} finished after {self.delay} seconds")
+
+# Creating and starting class-based threads
+print("\nStarting class-based threads:")
+threads = []
+for i in range(3):
+    t = WorkerThread(f"ClassThread-{i}", i)
+    threads.append(t)
+    t.start()
+
+# Wait for all threads to complete
+for t in threads:
+    t.join()
+
+print("All class-based threads completed")</pre>
             </div>
 
             <h4>Thread Synchronization with Lock</h4>
