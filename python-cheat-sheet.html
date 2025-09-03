@@ -2183,14 +2183,28 @@ print(f"Agent response: {result}")
             // Escape HTML to prevent conflicts
             code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             
-            // Comments (must be first to avoid conflicts)
-            code = code.replace(/(#.*$)/gm, '<span class="comment">$1</span>');
+            // First, protect strings by replacing them with placeholders
+            const strings = [];
+            let stringIndex = 0;
             
             // Triple quoted strings (docstrings) - must be before single/double quotes
-            code = code.replace(/(f?"""[\s\S]*?"""|f?'''[\s\S]*?''')/g, '<span class="string">$1</span>');
+            code = code.replace(/(f?"""[\s\S]*?"""|f?'''[\s\S]*?''')/g, function(match) {
+                const placeholder = `__STRING_${stringIndex}__`;
+                strings[stringIndex] = `<span class="string">${match}</span>`;
+                stringIndex++;
+                return placeholder;
+            });
             
             // Single and double quoted strings (including f-strings)
-            code = code.replace(/(f?"(?:[^"\\]|\\.)*"|f?'(?:[^'\\]|\\.)*')/g, '<span class="string">$1</span>');
+            code = code.replace(/(f?"(?:[^"\\]|\\.)*"|f?'(?:[^'\\]|\\.)*')/g, function(match) {
+                const placeholder = `__STRING_${stringIndex}__`;
+                strings[stringIndex] = `<span class="string">${match}</span>`;
+                stringIndex++;
+                return placeholder;
+            });
+            
+            // Now handle comments (after strings are protected)
+            code = code.replace(/(#[^<]*$)/gm, '<span class="comment">$1</span>');
             
             // Numbers (integers, floats, hex, binary, octal)
             code = code.replace(/\b(0[xX][0-9a-fA-F]+|0[bB][01]+|0[oO][0-7]+|\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="number">$1</span>');
@@ -2201,11 +2215,16 @@ print(f"Agent response: {result}")
             // Class definitions
             code = code.replace(/\b(class)\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, '<span class="keyword">$1</span> <span class="class">$2</span>');
             
-            // Python keywords
-            code = code.replace(/\b(and|as|assert|break|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|not|or|pass|raise|return|try|while|with|yield|async|await|nonlocal|True|False|None)\b/g, '<span class="keyword">$1</span>');
+            // Python keywords (avoid matching within HTML tags)
+            code = code.replace(/\b(and|as|assert|break|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|not|or|pass|raise|return|try|while|with|yield|async|await|nonlocal|True|False|None)\b(?![^<]*>)/g, '<span class="keyword">$1</span>');
             
-            // Python built-in functions
-            code = code.replace(/\b(abs|all|any|ascii|bin|bool|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|vars|zip|__import__|__init__|__str__|__repr__|__add__|__eq__|__enter__|__exit__|__call__|__next__|__iter__)\b/g, '<span class="builtin">$1</span>');
+            // Python built-in functions (avoid matching within HTML tags)
+            code = code.replace(/\b(abs|all|any|ascii|bin|bool|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|vars|zip|__import__|__init__|__str__|__repr__|__add__|__eq__|__enter__|__exit__|__call__|__next__|__iter__)\b(?![^<]*>)/g, '<span class="builtin">$1</span>');
+            
+            // Restore strings
+            for (let i = 0; i < strings.length; i++) {
+                code = code.replace(`__STRING_${i}__`, strings[i]);
+            }
             
             return code;
         }
