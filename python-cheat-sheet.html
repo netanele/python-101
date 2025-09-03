@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tutorial: From Basics to Advanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #306998 0%, #FFD43B 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #e8e8e8;
+            border-bottom: 3px solid #306998;
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #d0d0d0;
+            color: #306998;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #306998;
+            border-bottom-color: #306998;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: #306998;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #FFD43B;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #444;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-left: 4px solid #306998;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .code-block {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .output {
+            background: #e8f4f8;
+            border-left: 4px solid #17a2b8;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.85rem;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #306998;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .concept-list {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .concept-list ul {
+            margin-left: 1.5rem;
+        }
+
+        .concept-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                text-align: center;
+            }
+            
+            .tab-content {
+                padding: 1rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Python Tutorial: From Basics to Advanced</h1>
+            <p>A comprehensive guide covering Python 3.10-3.14 features, including Pydantic and AI integration</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'basics')">Basic Python</button>
+            <button class="tab-button" onclick="openTab(event, 'intermediate')">Intermediate</button>
+            <button class="tab-button" onclick="openTab(event, 'advanced')">Advanced</button>
+            <button class="tab-button" onclick="openTab(event, 'modern')">Modern Features</button>
+            <button class="tab-button" onclick="openTab(event, 'pydantic')">Pydantic & AI</button>
+        </div>
+
+        <!-- SECTION 1: BASIC PYTHON CONCEPTS -->
+        <div id="basics" class="tab-content active">
+            <h2><span class="emoji">🚀</span>Section 1: Basic Python Concepts</h2>
+            
+            <h3>Variables, Data Types, and Operators</h3>
+            <p>Python is dynamically typed - the type is determined at runtime. Variables don't need explicit type declarations.</p>
+            
+            <div class="code-block">
+<pre># Variables and basic data types
+x = 10                # Integer
+y = 3.14              # Float
+name = "Python"       # String
+is_awesome = True     # Boolean
+z = None              # None type
+
+print(f"x = {x}, type: {type(x)}")
+print(f"y = {y}, type: {type(y)}")
+print(f"name = {name}, type: {type(name)}")
+print(f"is_awesome = {is_awesome}, type: {type(is_awesome)}")
+print(f"z = {z}, type: {type(z)}")</pre>
+            </div>
+            <div class="output">
+                Output: x = 10, type: &lt;class 'int'&gt;<br>
+                y = 3.14, type: &lt;class 'float'&gt;<br>
+                name = Python, type: &lt;class 'str'&gt;<br>
+                is_awesome = True, type: &lt;class 'bool'&gt;<br>
+                z = None, type: &lt;class 'NoneType'&gt;
+            </div>
+
+            <h4>Arithmetic Operators</h4>
+            <div class="code-block">
+<pre># Arithmetic operators
+print(f"Addition: {x + 5}")             # 15
+print(f"Subtraction: {x - 5}")          # 5
+print(f"Multiplication: {x * 2}")       # 20
+print(f"Division: {x / 3}")             # 3.3333...
+print(f"Floor Division: {x // 3}")      # 3 (integer division)
+print(f"Modulus: {x % 3}")              # 1 (remainder)
+print(f"Exponentiation: {x ** 2}")      # 100 (x squared)</pre>
+            </div>
+
+            <h4>Comparison and Logical Operators</h4>
+            <div class="code-block">
+<pre># Comparison operators
+print(f"Equal: {x == 10}")              # True
+print(f"Not equal: {x != 5}")           # True
+print(f"Greater than: {x > 5}")         # True
+
+# Logical operators
+a, b = True, False
+print(f"AND: {a and b}")                # False
+print(f"OR: {a or b}")                  # True
+print(f"NOT: {not a}")                  # False
+
+# Identity and membership operators
+list1 = [1, 2, 3]
+list2 = [1, 2, 3]
+print(f"list1 is list2: {list1 is list2}")       # False (different objects)
+print(f"2 in list1: {2 in list1}")              # True</pre>
+            </div>
+
+            <h3>Control Flow</h3>
+            <p>Control flow statements allow you to control the execution path of your program.</p>
+
+            <h4>If-Elif-Else Statements</h4>
+            <div class="code-block">
+<pre>age = 25
+
+if age < 18:
+    print("You are a minor")
+elif age >= 18 and age < 65:
+    print("You are an adult")
+else:
+    print("You are a senior")
+
+# Ternary operator (conditional expression)
+status = "adult" if age >= 18 else "minor"
+print(f"Status: {status}")</pre>
+            </div>
+
+            <h4>Loops</h4>
+            <div class="code-block">
+<pre># While loop
+counter = 0
+while counter < 5:
+    print(f"Counter: {counter}")
+    counter += 1
+
+# For loop with range
+for i in range(5):  # 0, 1, 2, 3, 4
+    print(f"i: {i}")
+
+# For loop with step
+for i in range(0, 10, 2):  # 0, 2, 4, 6, 8
+    print(f"i: {i}")
+
+# For loop with iterable
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(f"Fruit: {fruit}")
+
+# Break and continue
+for i in range(10):
+    if i == 5:
+        break  # Exit the loop
+    if i % 2 == 0:
+        continue  # Skip even numbers
+    print(f"i: {i}")</pre>
+            </div>
+
+            <h3>Functions and Scope</h3>
+            <p>Functions are reusable blocks of code that perform specific tasks.</p>
+
+            <div class="code-block">
+<pre># Basic function definition
+def greet(name):
+    """This is a docstring. It describes what the function does."""
+    return f"Hello, {name}!"
+
+print(greet("World"))  # Hello, World!
+
+# Function with default parameters
+def greet_with_default(name="Stranger"):
+    return f"Hello, {name}!"
+
+print(greet_with_default())        # Hello, Stranger!
+print(greet_with_default("Friend"))  # Hello, Friend!
+
+# Function with arbitrary number of arguments
+def sum_all(*args):
+    """Sum all the arguments passed to the function."""
+    total = 0
+    for num in args:
+        total += num
+    return total
+
+print(f"Sum: {sum_all(1, 2, 3, 4, 5)}")  # 15
+
+# Function with keyword arguments
+def person_info(**kwargs):
+    """Print information about a person."""
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+person_info(name="Alice", age=30, city="New York")
+
+# Function with multiple parameters
+def calculate_rectangle_area(length, width):
+    return length * width
+print(f"Rectangle area: {calculate_rectangle_area(5, 3)}")  # 15
+
+# Variable scope examples
+x = 100  # Global variable
+def test_scope():
+    y = 200  # Local variable
+    print(f"Inside function - x: {x}, y: {y}")
+test_scope()
+print(f"Outside function - x: {x}")
+# print(f"y: {y}")  # This would raise a NameError: name 'y' is not defined
+
+# Modifying global variables
+def modify_global():
+    global x
+    x = 500
+    print(f"Inside function after modification - x: {x}")
+modify_global()
+print(f"Outside function after modification - x: {x}")</pre>
+            </div>
+
+            <div class="concept-list">
+                <h4>Variable Scope</h4>
+                <ul>
+                    <li><strong>Global variables:</strong> Accessible throughout the program</li>
+                    <li><strong>Local variables:</strong> Only accessible within the function they're defined</li>
+                    <li><strong>Global keyword:</strong> Use 'global' to modify global variables inside functions</li>
+                </ul>
+            </div>
+
+            <h3>Data Structures</h3>
+            <p>Python provides several built-in data structures for organizing and storing data.</p>
+
+            <h4>Lists - Ordered, Mutable Collections</h4>
+            <div class="code-block">
+<pre>fruits = ["apple", "banana", "cherry"]
+print(f"Fruits: {fruits}")
+print(f"First fruit: {fruits[0]}")
+print(f"Last fruit: {fruits[-1]}")
+
+# List methods
+fruits.append("orange")  # Add to the end
+fruits.insert(1, "blueberry")  # Insert at specific position
+fruits.remove("banana")  # Remove by value
+popped_fruit = fruits.pop()  # Remove and return the last item
+fruits.sort()  # Sort in place
+
+# List comprehensions - concise way to create lists
+numbers = [1, 2, 3, 4, 5]
+squares = [x**2 for x in numbers]
+even_squares = [x**2 for x in numbers if x % 2 == 0]
+print(f"Squares: {squares}")
+print(f"Even squares: {even_squares}")</pre>
+            </div>
+
+            <h4>Tuples - Ordered, Immutable Collections</h4>
+            <div class="code-block">
+<pre>coordinates = (10, 20)
+print(f"Coordinates: {coordinates}")
+print(f"X: {coordinates[0]}, Y: {coordinates[1]}")
+
+# Tuple unpacking
+x, y = coordinates
+print(f"Unpacked - X: {x}, Y: {y}")</pre>
+            </div>
+
+            <h4>Dictionaries - Key-Value Pairs</h4>
+            <div class="code-block">
+<pre>person = {
+    "name": "Alice",
+    "age": 30,
+    "city": "New York"
+}
+print(f"Person: {person}")
+print(f"Name: {person['name']}")
+
+# Dictionary methods
+person["email"] = "alice@example.com"  # Add new key-value pair
+phone = person.get("phone", "Not available")  # Get with default value
+
+# Dictionary comprehension
+squared_numbers = {x: x**2 for x in range(1, 6)}
+print(f"Squared numbers: {squared_numbers}")</pre>
+            </div>
+
+            <h4>Sets - Unordered Collections of Unique Elements</h4>
+            <div class="code-block">
+<pre>fruits_set = {"apple", "banana", "cherry", "apple"}  # Duplicate is removed
+print(f"Fruits set: {fruits_set}")
+
+# Set operations
+set1 = {1, 2, 3, 4, 5}
+set2 = {4, 5, 6, 7, 8}
+
+print(f"Union: {set1 | set2}")  # Elements in either set
+print(f"Intersection: {set1 & set2}")  # Elements in both sets
+print(f"Difference: {set1 - set2}")  # Elements in set1 but not in set2
+print(f"Symmetric difference: {set1 ^ set2}")  # Elements in either but not both</pre>
+            </div>
+
+            <h3>File I/O</h3>
+            <p>Python provides simple and powerful ways to work with files.</p>
+
+            <div class="code-block">
+<pre># Writing to a file
+with open("example.txt", "w") as file:
+    file.write("Hello, World!\n")
+    file.write("This is a test file.\n")
+    file.write("Python is awesome!\n")
+
+# Reading from a file
+with open("example.txt", "r") as file:
+    content = file.read()
+    print(content)
+
+# Reading line by line
+with open("example.txt", "r") as file:
+    for line in file:
+        print(f"Line: {line.strip()}")  # strip() removes the newline character
+
+# Appending to a file
+with open("example.txt", "a") as file:
+    file.write("This line was appended.\n")</pre>
+            </div>
+
+            <div class="highlight">
+                <strong>Best Practice:</strong> Always use the <code>with</code> statement when working with files. 
+                It automatically handles opening and closing files, even if an error occurs.
+            </div>
+        </div>
+
+        <!-- SECTION 2: INTERMEDIATE PYTHON CONCEPTS -->
+        <div id="intermediate" class="tab-content">
+            <h2><span class="emoji">🔧</span>Section 2: Intermediate Python Concepts</h2>
+
+            <h3>Classes and Object-Oriented Programming</h3>
+            <p>Object-oriented programming (OOP) allows you to create reusable code by organizing it into classes and objects.</p>
+
+            <div class="code-block">
+<pre># Basic class definition
+class Person:
+    """A simple class representing a person."""
+
+    # Class attribute (shared by all instances)
+    species = "Homo sapiens"
+
+    # Constructor (initialization) method
+    def __init__(self, name, age):
+        # Instance attributes (unique to each instance)
+        self.name = name
+        self.age = age
+
+    # Instance method
+    def greet(self):
+        return f"Hello, my name is {self.name} and I am {self.age} years old."
+
+    # Instance method with parameters
+    def celebrate_birthday(self):
+        self.age += 1
+        return f"Happy Birthday! {self.name} is now {self.age} years old."
+
+# Creating instances of the class
+person1 = Person("Alice", 30)
+person2 = Person("Bob", 25)
+
+print(person1.greet())
+print(person2.greet())
+print(person1.celebrate_birthday())</pre>
+            </div>
+
+            <h4>Special (Dunder) Methods</h4>
+            <div class="code-block">
+<pre>class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    # String representation for developers
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+
+    # String representation for users
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+    # Addition operator overloading
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    # Equality operator overloading
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+p1 = Point(1, 2)
+p2 = Point(3, 4)
+
+print(f"p1: {p1}")  # Uses __str__
+print(f"p1 + p2: {p1 + p2}")  # Uses __add__ and then __str__
+print(f"p1 == p2: {p1 == p2}")  # Uses __eq__</pre>
+            </div>
+
+            <h3>Inheritance and Interfaces</h3>
+            <p>Inheritance allows you to create new classes based on existing classes, promoting code reuse.</p>
+
+            <div class="code-block">
+<pre># Base class (parent class)
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+    def introduce(self):
+        return f"I am {self.name}, and I can {self.speak()}."
+
+# Derived class (child class)
+class Dog(Animal):
+    def speak(self):
+        return "bark"
+
+    # Additional method specific to Dog
+    def wag_tail(self):
+        return f"{self.name} is wagging tail."
+
+# Another derived class
+class Cat(Animal):
+    def speak(self):
+        return "meow"
+
+    # Additional method specific to Cat
+    def purr(self):
+        return f"{self.name} is purring."
+
+# Creating instances of derived classes
+dog = Dog("Rex")
+cat = Cat("Whiskers")
+
+print(dog.introduce())
+print(cat.introduce())
+print(dog.wag_tail())
+print(cat.purr())</pre>
+            </div>
+
+            <h4>Multiple Inheritance and Method Resolution Order (MRO)</h4>
+            <div class="code-block">
+<pre># Multiple inheritance
+class A:
+    def method(self):
+        return "Method from A"
+
+class B:
+    def method(self):
+        return "Method from B"
+    def another_method(self):
+        return "Another method from B"
+
+# C inherits from both A and B
+# Method Resolution Order (MRO) determines which method is called
+class C(A, B):
+    pass
+
+class D(B, A):
+    pass
+
+c = C()
+d = D()
+
+print(f"C.method(): {c.method()}")  # From A (first in inheritance list)
+print(f"D.method(): {d.method()}")  # From B (first in inheritance list)
+print(f"C.another_method(): {c.another_method()}")  # From B
+
+# Method Resolution Order (MRO)
+print(f"C's MRO: {[cls.__name__ for cls in C.__mro__]}")
+print(f"D's MRO: {[cls.__name__ for cls in D.__mro__]}")</pre>
+            </div>
+
+            <h4>Abstract Base Classes (ABC)</h4>
+            <div class="code-block">
+<pre>from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        """Calculate the area of the shape."""
+        pass
+
+    @abstractmethod
+    def perimeter(self):
+        """Calculate the perimeter of the shape."""
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+rectangle = Rectangle(5, 3)
+print(f"Rectangle area: {rectangle.area()}, perimeter: {rectangle.perimeter()}")</pre>
+            </div>
+
+            <h3>Exception Handling</h3>
+            <p>Exception handling allows you to gracefully handle errors that may occur during program execution.</p>
+
+            <div class="code-block">
+<pre># Basic try-except
+try:
+    x = 10 / 0  # This will raise a ZeroDivisionError
+except ZeroDivisionError:
+    print("Error: Division by zero!")
+
+# try-except-else-finally
+try:
+    x = 10 / 2  # This will not raise an exception
+except ZeroDivisionError:
+    print("Error: Division by zero!")
+else:
+    print(f"Division successful, result: {x}")  # This runs if no exception occurs
+finally:
+    print("This always executes, regardless of exceptions")  # Cleanup code
+
+# Handling multiple exceptions
+try:
+    value = int("abc")  # ValueError
+    result = 10 / value  # Potential ZeroDivisionError
+except ValueError:
+    print("Error: Invalid conversion!")
+except ZeroDivisionError:
+    print("Error: Division by zero!")
+except Exception as e:
+    print(f"Unexpected error: {e}")</pre>
+            </div>
+
+            <h4>Custom Exceptions</h4>
+            <div class="code-block">
+<pre>class CustomError(Exception):
+    """A custom exception class."""
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
+        super().__init__(self.message)
+
+def validate_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    if age > 150:
+        raise CustomError("Age is unrealistically high", 1001)
+    return age
+
+try:
+    validate_age(200)
+except ValueError as e:
+    print(f"ValueError: {e}")
+except CustomError as e:
+    print(f"CustomError (code {e.code}): {e.message}")</pre>
+            </div>
+
+            <h3>Modules and Packages</h3>
+            <p>Modules allow you to organize your code into reusable files, while packages group related modules together.</p>
+
+            <div class="code-block">
+<pre># Importing standard library modules
+import math
+import random
+from datetime import datetime, timedelta
+
+print(f"Pi: {math.pi}")
+print(f"Random number: {random.randint(1, 100)}")
+print(f"Current date and time: {datetime.now()}")
+print(f"Tomorrow: {datetime.now() + timedelta(days=1)}")
+
+# Creating a module (this would normally be in a separate file)
+# my_module.py
+def greet(name):
+    return f"Hello, {name}!"
+
+class Calculator:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+    @staticmethod
+    def subtract(a, b):
+        return a - b
+
+PI = 3.14159</pre>
+            </div>
+
+            <h3>Decorators and Context Managers</h3>
+            <p>Decorators allow you to modify the behavior of functions or classes, while context managers provide a clean way to manage resources.</p>
+
+            <h4>Basic Decorator</h4>
+            <div class="code-block">
+<pre>def simple_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("Before function call")
+        result = func(*args, **kwargs)
+        print("After function call")
+        return result
+    return wrapper
+
+# Applying the decorator
+@simple_decorator
+def say_hello(name):
+    print(f"Hello, {name}!")
+    return f"Hello, {name}!"
+
+say_hello("Alice")</pre>
+            </div>
+
+            <h4>Decorator with Arguments</h4>
+            <div class="code-block">
+<pre>def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            results = []
+            for _ in range(n):
+                results.append(func(*args, **kwargs))
+            return results
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say_hi(name):
+    return f"Hi, {name}!"
+
+print(say_hi("Bob"))</pre>
+            </div>
+
+            <h4>Context Managers</h4>
+            <div class="code-block">
+<pre>class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+
+    def __enter__(self):
+        self.file = open(self.filename, self.mode)
+        return self.file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+        # Return True to suppress exceptions, False to propagate them
+        return False
+
+# Using the context manager
+with FileManager("example.txt", "r") as file:
+    content = file.read()
+    print(f"First 10 characters: {content[:10]}...")
+
+# Context manager with contextlib
+from contextlib import contextmanager
+
+@contextmanager
+def file_manager(filename, mode):
+    try:
+        file = open(filename, mode)
+        yield file
+    finally:
+        file.close()</pre>
+            </div>
+
+            <div class="feature-box">
+                <h4>Key OOP Principles</h4>
+                <ul>
+                    <li><strong>Encapsulation:</strong> Bundling data and methods together</li>
+                    <li><strong>Inheritance:</strong> Creating new classes based on existing ones</li>
+                    <li><strong>Polymorphism:</strong> Using a common interface for different types</li>
+                    <li><strong>Abstraction:</strong> Hiding complex implementation details</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECTION 3: ADVANCED PYTHON CONCEPTS -->
+        <div id="advanced" class="tab-content">
+            <h2><span class="emoji">⚡</span>Section 3: Advanced Python Concepts</h2>
+
+            <h3>Threading and Multiprocessing</h3>
+            <p>Python provides several ways to achieve concurrency and parallelism for different types of tasks.</p>
+
+            <h4>Threading - For I/O-bound tasks</h4>
+            <div class="code-block">
+<pre>import threading
+import time
+
+def worker(name, delay):
+    """A simple worker function that sleeps for a specified amount of time."""
+    print(f"Worker {name} starting")
+    time.sleep(delay)
+    print(f"Worker {name} finished after {delay} seconds")
+
+# Creating and starting threads
+threads = []
+for i in range(3):
+    # Create a thread
+    t = threading.Thread(target=worker, args=(f"Thread-{i}", i))
+    threads.append(t)
+    # Start the thread
+    t.start()
+
+# Wait for all threads to complete
+for t in threads:
+    t.join()
+
+print("All threads completed")</pre>
+            </div>
+
+            <h4>Thread Synchronization with Lock</h4>
+            <div class="code-block">
+<pre>counter = 0
+counter_lock = threading.Lock()
+
+def increment_counter(amount, repeats):
+    global counter
+    for _ in range(repeats):
+        with counter_lock:  # Acquire the lock
+            # Critical section (only one thread can execute this at a time)
+            current = counter
+            time.sleep(0.001)  # Simulate some work
+            counter = current + amount
+        # Lock is released here
+
+# Create threads that increment the counter
+threads = []
+for i in range(5):
+    t = threading.Thread(target=increment_counter, args=(1, 10))
+    threads.append(t)
+    t.start()
+
+# Wait for all threads to complete
+for t in threads:
+    t.join()
+
+print(f"Final counter value: {counter}")</pre>
+            </div>
+
+            <h4>Multiprocessing - For CPU-bound tasks</h4>
+            <div class="code-block">
+<pre>import multiprocessing
+
+def cpu_bound_task(number):
+    """A CPU-bound task that calculates the sum of squares up to a number."""
+    result = sum(i * i for i in range(number))
+    print(f"Task with input {number} result: {result}")
+    return result
+
+# Using a process pool to execute tasks in parallel
+if __name__ == "__main__":  # This guard is important for multiprocessing
+    with multiprocessing.Pool(processes=3) as pool:
+        # Map the function to the inputs
+        results = pool.map(cpu_bound_task, [1000000, 2000000, 3000000])
+        print(f"Pool results: {results}")</pre>
+            </div>
+
+            <h3>Asyncio and Asynchronous Programming</h3>
+            <p>Asyncio provides a framework for writing concurrent code using async/await syntax.</p>
+
+            <div class="code-block">
+<pre>import asyncio
+
+# Coroutine definition with async/await
+async def async_worker(name, delay):
+    """A coroutine that simulates an I/O-bound task."""
+    print(f"Async worker {name} starting")
+    await asyncio.sleep(delay)  # Non-blocking sleep
+    print(f"Async worker {name} finished after {delay} seconds")
+    return f"{name} result"
+
+# Running multiple coroutines concurrently
+async def main():
+    print("Running multiple coroutines concurrently:")
+    tasks = [
+        async_worker(f"Coroutine-{i}", i) for i in range(1, 4)
+    ]
+    results = await asyncio.gather(*tasks)
+    print(f"Results: {results}")
+
+# Run the asyncio event loop
+asyncio.run(main())</pre>
+            </div>
+
+            <h4>Async Context Manager</h4>
+            <div class="code-block">
+<pre>class AsyncResource:
+    async def __aenter__(self):
+        print("Acquiring resource asynchronously")
+        await asyncio.sleep(1)  # Simulate async acquisition
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        print("Releasing resource asynchronously")
+        await asyncio.sleep(0.5)  # Simulate async release
+
+    async def use_resource(self):
+        print("Using resource")
+        await asyncio.sleep(0.5)  # Simulate async usage
+
+# Using async context manager
+async def use_async_resource():
+    print("Using async context manager:")
+    async with AsyncResource() as resource:
+        await resource.use_resource()
+    print("Done with async resource")</pre>
+            </div>
+
+            <h3>Type Hints and Annotations</h3>
+            <p>Type hints provide a way to indicate the expected types of variables, function parameters, and return values.</p>
+
+            <div class="code-block">
+<pre>from typing import List, Dict, Tuple, Optional, Union, Any, Callable
+
+def greet_with_types(name: str) -> str:
+    """Greet a person by name with type hints."""
+    return f"Hello, {name}!"
+
+# Type hints for collections
+def process_items(items: List[int]) -> List[int]:
+    """Process a list of integers and return a new list."""
+    return [item * 2 for item in items]
+
+# Type hints for dictionaries and tuples
+def process_data(data: Dict[str, int], config: Tuple[str, int]) -> Dict[str, float]:
+    """Process data with configuration."""
+    result = {}
+    for key, value in data.items():
+        result[key] = value * config[1] + 0.5
+    return result
+
+# Optional and Union types
+def maybe_process(value: Optional[int] = None) -> Union[int, str]:
+    """Process a value that might be None."""
+    if value is None:
+        return "No value provided"
+    return value * 2
+
+# Type aliases
+Vector = List[float]
+Matrix = List[Vector]
+
+def dot_product(v1: Vector, v2: Vector) -> float:
+    """Calculate the dot product of two vectors."""
+    return sum(x * y for x, y in zip(v1, v2))
+
+# Function type hints
+Callback = Callable[[int, int], int]
+
+def apply_operation(a: int, b: int, operation: Callback) -> int:
+    """Apply an operation to two integers."""
+    return operation(a, b)</pre>
+            </div>
+
+            <h3>Generators and Iterators</h3>
+            <p>Generators provide a memory-efficient way to work with sequences of data.</p>
+
+            <h4>Basic Generator Function</h4>
+            <div class="code-block">
+<pre>def count_up_to(limit):
+    """Generate numbers from 0 up to limit."""
+    count = 0
+    while count < limit:
+        yield count
+        count += 1
+
+print("Generator example:")
+for number in count_up_to(5):
+    print(number, end=" ")
+
+# Generator expression (similar to list comprehension)
+squares_gen = (x**2 for x in range(5))
+print("Generator expression:")
+for square in squares_gen:
+    print(square, end=" ")</pre>
+            </div>
+
+            <h4>Infinite Generator</h4>
+            <div class="code-block">
+<pre>def infinite_counter():
+    """An infinite generator that counts up from 0."""
+    count = 0
+    while True:
+        yield count
+        count += 1
+
+print("Infinite generator (limited to 5 items):")
+counter = infinite_counter()
+for _ in range(5):
+    print(next(counter), end=" ")</pre>
+            </div>
+
+            <h4>Custom Iterator Class</h4>
+            <div class="code-block">
+<pre>class Countdown:
+    """An iterator that counts down from n to 0."""
+    def __init__(self, start):
+        self.start = start
+
+    def __iter__(self):
+        # Return an iterator (self in this case)
+        return self
+
+    def __next__(self):
+        # Return the next item or raise StopIteration
+        if self.start < 0:
+            raise StopIteration
+        current = self.start
+        self.start -= 1
+        return current
+
+print("Custom iterator:")
+for num in Countdown(5):
+    print(num, end=" ")</pre>
+            </div>
+
+            <h3>Functional Programming Concepts</h3>
+            <p>Python supports functional programming paradigms with features like lambda functions, higher-order functions, and immutable data patterns.</p>
+
+            <div class="code-block">
+<pre># Lambda functions (anonymous functions)
+add = lambda a, b: a + b
+print(f"Lambda function: {add(5, 3)}")
+
+# Higher-order functions that take functions as arguments
+def apply_twice(func, value):
+    """Apply a function twice to a value."""
+    return func(func(value))
+
+print(f"Apply twice: {apply_twice(lambda x: x * 2, 3)}")  # 3 -> 6 -> 12
+
+# Map, filter, reduce
+numbers = [1, 2, 3, 4, 5]
+
+# Map: Apply a function to each item in an iterable
+squared = list(map(lambda x: x**2, numbers))
+print(f"Map result: {squared}")
+
+# Filter: Filter items based on a function
+even = list(filter(lambda x: x % 2 == 0, numbers))
+print(f"Filter result: {even}")
+
+# Reduce: Reduce an iterable to a single value
+from functools import reduce
+sum_all = reduce(lambda a, b: a + b, numbers)
+print(f"Reduce result: {sum_all}")</pre>
+            </div>
+
+            <h4>Function Composition and Partial Functions</h4>
+            <div class="code-block">
+<pre># Function composition
+def compose(f, g):
+    """Compose two functions: compose(f, g)(x) = f(g(x))."""
+    return lambda x: f(g(x))
+
+# Example functions
+to_upper = lambda s: s.upper()
+add_exclamation = lambda s: s + "!"
+
+# Compose them
+shout = compose(add_exclamation, to_upper)
+print(f"Function composition: {shout('hello')}")
+
+# Partial functions
+from functools import partial
+
+def power(base, exponent):
+    return base ** exponent
+
+# Create a partial function with base=2
+square = partial(power, 2)
+print(f"Partial function (square): {square(3)}")  # 2^3 = 8
+
+# Recursion
+def factorial(n):
+    """Calculate factorial recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+print(f"Factorial of 5: {factorial(5)}")</pre>
+            </div>
+
+            <div class="info">
+                <h4><span class="emoji">💡</span>Performance Tips</h4>
+                <ul>
+                    <li><strong>Use generators</strong> for large datasets to save memory</li>
+                    <li><strong>Choose threading</strong> for I/O-bound tasks</li>
+                    <li><strong>Choose multiprocessing</strong> for CPU-bound tasks</li>
+                    <li><strong>Use asyncio</strong> for high-concurrency I/O operations</li>
+                    <li><strong>Type hints</strong> improve code documentation and can help with optimization</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECTION 4: MODERN PYTHON FEATURES -->
+        <div id="modern" class="tab-content">
+            <h2><span class="emoji">🚀</span>Section 4: Modern Python Features (3.10-3.14)</h2>
+
+            <h3>Python 3.10 Features <span class="version-badge">3.10</span></h3>
+            <p>Python 3.10 introduced structural pattern matching and improved error messages.</p>
+
+            <h4>Structural Pattern Matching (match/case)</h4>
+            <div class="code-block">
+<pre>def check_status(status):
+    """Check the status using structural pattern matching."""
+    match status:
+        case 200:
+            return "OK"
+        case 404:
+            return "Not Found"
+        case 500:
+            return "Server Error"
+        case _:  # Default case (wildcard pattern)
+            return "Unknown Status"
+
+print(f"Status 200: {check_status(200)}")
+print(f"Status 404: {check_status(404)}")
+print(f"Status 999: {check_status(999)}")
+
+# Pattern matching with complex data structures
+def process_command(command):
+    """Process a command using structural pattern matching with data structures."""
+    match command:
+        case ["quit"]:
+            return "Exiting program"
+        case ["load", filename]:
+            return f"Loading file: {filename}"
+        case ["save", filename, content]:
+            return f"Saving content to file: {filename}"
+        case ["search", *keywords] if keywords:  # Guard pattern with condition
+            return f"Searching for: {', '.join(keywords)}"
+        case _:
+            return "Unknown command"
+
+print(f"Command ['quit']: {process_command(['quit'])}")
+print(f"Command ['load', 'data.txt']: {process_command(['load', 'data.txt'])}")
+print(f"Command ['search', 'python', 'tutorial']: {process_command(['search', 'python', 'tutorial'])}")</pre>
+            </div>
+
+            <h4>Union Types with | Operator</h4>
+            <div class="code-block">
+<pre>def process_data(data: int | float | str) -> str:
+    """Process data that can be int, float, or str."""
+    return f"Processed: {data}"
+
+print(f"Process int: {process_data(42)}")
+print(f"Process float: {process_data(3.14)}")
+print(f"Process str: {process_data('hello')}")</pre>
+            </div>
+
+            <h3>Python 3.11 Features <span class="version-badge">3.11</span></h3>
+            <p>Python 3.11 brought significant performance improvements and new language features.</p>
+
+            <div class="feature-box">
+                <h4><span class="emoji">⚡</span>Performance Improvements</h4>
+                <ul>
+                    <li>25% faster execution on average</li>
+                    <li>Faster startup time</li>
+                    <li>Optimized string operations</li>
+                    <li>More efficient memory usage</li>
+                    <li>Enhanced error messages with better tracebacks</li>
+                </ul>
+            </div>
+
+            <h4>Exception Groups and except* Syntax</h4>
+            <div class="code-block">
+<pre># Exception groups allow handling multiple exceptions at once
+# (Conceptual example - would need actual ExceptionGroup)
+try:
+    # In Python 3.11, you can raise multiple exceptions at once
+    print("ExceptionGroup allows handling multiple exceptions simultaneously")
+except* ValueError as e:
+    print(f"Would catch ValueError: {e}")
+except* TypeError as e:
+    print(f"Would catch TypeError: {e}")
+except* Exception as e:
+    print(f"Would catch other exceptions: {e}")</pre>
+            </div>
+
+            <h4>Self Type for Method Chaining</h4>
+            <div class="code-block">
+<pre>from typing import Self  # New in Python 3.11
+
+class Builder:
+    def __init__(self, value: int = 0) -> None:
+        self.value = value
+
+    def increment(self, amount: int) -> Self:  # Returns instance of the same class
+        self.value += amount
+        return self
+
+    def decrement(self, amount: int) -> Self:  # Returns instance of the same class
+        self.value -= amount
+        return self
+
+    def get_value(self) -> int:
+        return self.value
+
+# Method chaining with Self type
+builder = Builder(10)
+result = builder.increment(5).decrement(3).increment(2).get_value()
+print(f"Builder result: {result}")</pre>
+            </div>
+
+            <h3>Python 3.12 Features <span class="version-badge">3.12</span></h3>
+            <p>Python 3.12 enhanced f-strings and introduced new type parameter syntax.</p>
+
+            <h4>F-string Improvements</h4>
+            <div class="code-block">
+<pre>name = "Python"
+version = 3.12
+
+# In Python 3.12, you can use multiple quotes in f-strings
+print(f"Using quotes in f-strings: {name = }, {version = }")
+
+# In Python 3.12, you can use backslashes in f-string expressions
+long_calculation = 1 + 2 + \
+                  3 + 4
+print(f"Result of long calculation: {long_calculation}")</pre>
+            </div>
+
+            <h4>Type Parameter Syntax (PEP 695)</h4>
+            <div class="code-block">
+<pre># New way in Python 3.12
+class Stack[T]:  # Type parameter directly in the class definition
+    def __init__(self) -> None:
+        self.items: list[T] = []
+
+    def push(self, item: T) -> None:
+        self.items.append(item)
+
+    def pop(self) -> T:
+        return self.items.pop()
+
+# Using the generic classes
+int_stack = Stack[int]()
+int_stack.push(1)
+int_stack.push(2)
+print(f"Popped from int_stack: {int_stack.pop()}")
+
+str_stack = Stack[str]()
+str_stack.push("hello")
+str_stack.push("world")
+print(f"Popped from str_stack: {str_stack.pop()}")
+
+# New 'type' statement for type aliases
+type Point2D = tuple[float, float]  # Type alias using the new syntax
+
+def distance(p1: Point2D, p2: Point2D) -> float:
+    import math
+    return math.sqrt((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2)
+
+point1: Point2D = (0.0, 0.0)
+point2: Point2D = (3.0, 4.0)
+print(f"Distance between points: {distance(point1, point2)}")</pre>
+            </div>
+
+            <h3>Python 3.13 Features <span class="version-badge">3.13</span></h3>
+            <p>Python 3.13 introduced groundbreaking features like free-threading and JIT compilation.</p>
+
+            <div class="feature-box">
+                <h4><span class="emoji">🚀</span>Major Python 3.13 Features</h4>
+                <ul>
+                    <li><strong>Free-threaded CPython:</strong> Removes the GIL for true parallelism</li>
+                    <li><strong>JIT Compiler:</strong> Experimental just-in-time compilation</li>
+                    <li><strong>New REPL:</strong> Complete rewrite with syntax highlighting</li>
+                    <li><strong>Mobile Support:</strong> Official iOS and Android support</li>
+                    <li><strong>Enhanced Error Messages:</strong> More precise error locations</li>
+                </ul>
+            </div>
+
+            <h4>Free-Threading (GIL Removal)</h4>
+            <div class="code-block">
+<pre>import threading
+import time
+import sys
+
+def cpu_intensive_task(n: int, result_list: list, index: int) -> None:
+    """A CPU-intensive task that benefits from parallel execution."""
+    total = 0
+    for i in range(n):
+        total += i ** 2
+    result_list[index] = total
+
+def demonstrate_free_threading():
+    """Demonstrate potential benefits of free-threading in Python 3.13."""
+    print("Free-threading demonstration:")
+    
+    # Check if we're running with free-threading enabled
+    gil_enabled = sys._is_gil_enabled() if hasattr(sys, '_is_gil_enabled') else True
+    print(f"GIL enabled: {gil_enabled}")
+    
+    # Run CPU-intensive tasks
+    n_tasks = 4
+    n_iterations = 1000000
+    results = [0] * n_tasks
+    
+    # Measure time with threading
+    start_time = time.time()
+    threads = []
+    
+    for i in range(n_tasks):
+        thread = threading.Thread(target=cpu_intensive_task, args=(n_iterations, results, i))
+        threads.append(thread)
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
+    
+    threading_time = time.time() - start_time
+    print(f"Threading time: {threading_time:.3f}s")
+    print(f"Results sum: {sum(results)}")
+    
+    if not gil_enabled:
+        print("✅ Running with free-threading - true parallelism achieved!")
+    else:
+        print("ℹ️ Running with GIL - threads run sequentially for CPU-bound tasks")
+
+demonstrate_free_threading()</pre>
+            </div>
+
+            <h4>JIT Compiler</h4>
+            <div class="warning">
+                <strong>Note:</strong> The JIT compiler is highly experimental in Python 3.13 and must be enabled explicitly.
+                To enable: <code>python3.13 -X jit your_script.py</code> or set <code>PYTHON_JIT=1</code>
+            </div>
+
+            <div class="code-block">
+<pre>def jit_benchmark_function(iterations: int) -> float:
+    """Function with tight loops that benefits from JIT."""
+    total = 0.0
+    for i in range(iterations):
+        total += (i * 2.5) ** 0.5
+    return total
+
+result = jit_benchmark_function(100000)
+print(f"Benchmark result: {result:.2f}")
+print("Note: With JIT enabled, this function could run significantly faster")</pre>
+            </div>
+
+            <h4>Enhanced REPL</h4>
+            <div class="info">
+                <h4><span class="emoji">🎯</span>New Interactive Interpreter (PyREPL)</h4>
+                <ul>
+                    <li>Syntax highlighting with color support</li>
+                    <li>Improved multiline editing capabilities</li>
+                    <li>Enhanced tab completion and introspection</li>
+                    <li>Command history with search functionality</li>
+                    <li>Better error handling and display</li>
+                </ul>
+            </div>
+
+            <h3>Python 3.14 Features <span class="version-badge">3.14 (Expected)</span></h3>
+            <p>Python 3.14 is in development with expected release in October 2025.</p>
+
+            <div class="warning">
+                <strong>Note:</strong> Python 3.14 features are in development and subject to change.
+            </div>
+
+            <div class="feature-box">
+                <h4><span class="emoji">🔮</span>Expected Python 3.14 Features</h4>
+                <ul>
+                    <li><strong>JIT Maturation:</strong> More stable and potentially default-enabled JIT</li>
+                    <li><strong>Threading Improvements:</strong> Better free-threading performance</li>
+                    <li><strong>Enhanced Pattern Matching:</strong> More powerful match/case features</li>
+                    <li><strong>Performance Optimizations:</strong> Further interpreter improvements</li>
+                    <li><strong>Developer Experience:</strong> Better debugging and profiling tools</li>
+                </ul>
+            </div>
+
+            <h4>Enhanced JIT Compiler (Expected)</h4>
+            <div class="code-block">
+<pre>def matrix_multiply(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
+    """Matrix multiplication that benefits from JIT compilation."""
+    rows_a, cols_a = len(a), len(a[0])
+    rows_b, cols_b = len(b), len(b[0])
+    
+    if cols_a != rows_b:
+        raise ValueError("Incompatible matrix dimensions")
+    
+    result = [[0.0 for _ in range(cols_b)] for _ in range(rows_a)]
+    
+    for i in range(rows_a):
+        for j in range(cols_b):
+            for k in range(cols_a):
+                result[i][j] += a[i][k] * b[k][j]
+    
+    return result
+
+# Small matrices for demonstration
+matrix_a = [[1.0, 2.0], [3.0, 4.0]]
+matrix_b = [[5.0, 6.0], [7.0, 8.0]]
+
+result = matrix_multiply(matrix_a, matrix_b)
+print(f"Matrix multiplication result: {result}")
+print("✨ In Python 3.14, this computation would be JIT-compiled for better performance")</pre>
+            </div>
+
+            <div class="highlight">
+                <h4><span class="emoji">📅</span>Version Summary</h4>
+                <ul>
+                    <li><strong>Python 3.10:</strong> Pattern matching, better error messages</li>
+                    <li><strong>Python 3.11:</strong> 25% performance boost, exception groups</li>
+                    <li><strong>Python 3.12:</strong> F-string improvements, new type syntax</li>
+                    <li><strong>Python 3.13:</strong> Free-threading, JIT compiler, mobile support</li>
+                    <li><strong>Python 3.14:</strong> JIT maturation, threading improvements (in development)</li>
+                </ul>
+                <p><strong>Recommendation:</strong> Use Python 3.11+ for production, 3.13+ for experimentation</p>
+            </div>
+        </div>
+
+        <!-- SECTION 5: PYDANTIC AND PYDANTIC AI -->
+        <div id="pydantic" class="tab-content">
+            <h2><span class="emoji">🤖</span>Section 5: Pydantic and Pydantic AI</h2>
+
+            <h3>Pydantic Basics</h3>
+            <p>Pydantic is a data validation and settings management library that uses Python type annotations to validate data and manage configurations.</p>
+
+            <h4>Basic Model Definition</h4>
+            <div class="code-block">
+<pre>from pydantic import BaseModel, Field, ValidationError
+from typing import List, Optional
+from datetime import datetime
+import uuid
+
+class User(BaseModel):
+    """A Pydantic model representing a user."""
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)  # Auto-generated UUID
+    username: str
+    email: str
+    full_name: Optional[str] = None  # Optional field with default None
+    age: int = Field(gt=0, lt=120)  # Field with validation constraints
+    is_active: bool = True  # Field with default value
+    created_at: datetime = Field(default_factory=datetime.now)  # Auto-generated timestamp
+    tags: List[str] = []  # List field with default empty list
+
+# Creating a model instance
+try:
+    # Valid data
+    user = User(
+        username="johndoe",
+        email="john@example.com",
+        full_name="John Doe",
+        age=30,
+        tags=["developer", "python"]
+    )
+    print(f"User created: {user}")
+    
+    # Access fields
+    print(f"Username: {user.username}")
+    print(f"Email: {user.email}")
+    print(f"Age: {user.age}")
+    
+    # Convert to dictionary
+    user_dict = user.model_dump()
+    print(f"User as dict: {user_dict}")
+    
+    # Convert to JSON
+    user_json = user.model_dump_json()
+    print(f"User as JSON: {user_json}")
+
+except ValidationError as e:
+    print(f"Validation error: {e}")</pre>
+            </div>
+
+            <h4>Custom Validators</h4>
+            <div class="code-block">
+<pre>from pydantic import validator
+
+class Product(BaseModel):
+    id: int
+    name: str
+    price: float = Field(gt=0)  # Price must be greater than 0
+    tags: List[str] = []
+
+    # Custom validator for name field
+    @validator('name')
+    def name_must_not_be_empty(cls, v):
+        if not v.strip():
+            raise ValueError('Name cannot be empty')
+        return v.title()  # Convert to title case
+
+    # Custom validator for tags field
+    @validator('tags')
+    def tags_must_be_unique(cls, v):
+        if len(v) != len(set(v)):
+            raise ValueError('Tags must be unique')
+        return v
+
+try:
+    # Valid product
+    product = Product(id=1, name="laptop", price=999.99, tags=["electronics", "computers"])
+    print(f"Product created: {product}")
+    
+    # Invalid product (empty name)
+    invalid_product = Product(id=2, name="", price=10.99)
+except ValidationError as e:
+    print(f"Product validation error: {e}")</pre>
+            </div>
+
+            <h4>Nested Models</h4>
+            <div class="code-block">
+<pre>class Address(BaseModel):
+    street: str
+    city: str
+    country: str
+    postal_code: str
+
+class Customer(BaseModel):
+    id: int
+    name: str
+    addresses: List[Address]  # List of Address models
+    primary_address: Optional[Address] = None  # Optional nested model
+
+# Create a customer with nested address models
+address1 = Address(street="123 Main St", city="New York", country="USA", postal_code="10001")
+address2 = Address(street="456 Elm St", city="San Francisco", country="USA", postal_code="94107")
+
+customer = Customer(
+    id=1,
+    name="Jane Smith",
+    addresses=[address1, address2],
+    primary_address=address1
+)
+
+print(f"Customer created: {customer}")
+print(f"Primary address city: {customer.primary_address.city}")</pre>
+            </div>
+
+            <h3>Pydantic AI</h3>
+            <p>Pydantic AI is a framework for building AI agents with structured data extraction and validation.</p>
+
+            <div class="feature-box">
+                <h4><span class="emoji">🤖</span>Pydantic AI Key Features</h4>
+                <ul>
+                    <li><strong>Structured extraction:</strong> Extract structured data from LLM outputs</li>
+                    <li><strong>Function calling:</strong> Define tools and functions that AI can use</li>
+                    <li><strong>Agent frameworks:</strong> Build complex AI workflows</li>
+                    <li><strong>Type safety:</strong> Ensure data validation in AI applications</li>
+                    <li><strong>Integration:</strong> Works seamlessly with existing Pydantic models</li>
+                </ul>
+            </div>
+
+            <h4>Structured Data Extraction</h4>
+            <div class="code-block">
+<pre>class MovieReview(BaseModel):
+    """A model for extracting structured movie review data from text."""
+    title: str = Field(description="The title of the movie")
+    director: str = Field(description="The director of the movie")
+    year: int = Field(description="The year the movie was released")
+    rating: float = Field(description="Rating from 0-10", ge=0, le=10)
+    review: str = Field(description="A brief review of the movie")
+    genres: List[str] = Field(description="List of genres for the movie")
+
+# In a real application with Pydantic AI, you would use it like this:
+"""
+from pydantic_ai import AI
+
+# Initialize AI with your API key
+ai = AI(api_key="your_api_key")
+
+# Extract structured data from text
+text = "I watched The Shawshank Redemption directed by Frank Darabont. 
+        This 1994 drama is a masterpiece that deserves a solid 9.5/10. 
+        It tells the story of a man's experience in prison and his eventual escape. 
+        It's both a drama and a crime film with elements of friendship and hope."
+
+# Extract structured data using the MovieReview model
+result = ai.extract(text, MovieReview)
+print(f"Extracted movie review: {result}")
+"""
+
+print("Example of what extracted data might look like:")
+print('''
+{
+    "title": "The Shawshank Redemption",
+    "director": "Frank Darabont", 
+    "year": 1994,
+    "rating": 9.5,
+    "review": "A masterpiece that tells the story of a man's experience in prison and his eventual escape.",
+    "genres": ["Drama", "Crime"]
+}
+''')</pre>
+            </div>
+
+            <h4>Function Calling with Pydantic AI</h4>
+            <div class="code-block">
+<pre>class SearchQuery(BaseModel):
+    query: str = Field(description="The search query")
+    max_results: int = Field(description="Maximum number of results to return", default=5)
+
+class WeatherQuery(BaseModel):
+    location: str = Field(description="The location to get weather for")
+    unit: str = Field(description="Temperature unit (celsius/fahrenheit)", default="celsius")
+
+# Example code (not runnable without the actual library):
+"""
+# Define functions that can be called by the AI
+def search(query: SearchQuery) -> List[str]:
+    # In a real application, this would call a search API
+    return [f"Result {i} for {query.query}" for i in range(query.max_results)]
+
+def get_weather(query: WeatherQuery) -> Dict[str, Union[str, float]]:
+    # In a real application, this would call a weather API
+    return {
+        "location": query.location,
+        "temperature": 22.5 if query.unit == "celsius" else 72.5,
+        "condition": "Sunny",
+        "unit": query.unit
+    }
+
+# Register functions with the AI
+ai.register_function(search)
+ai.register_function(get_weather)
+
+# Let the AI decide which function to call based on user input
+user_input = "What's the weather like in New York?"
+result = ai.run(user_input)
+print(f"AI response: {result}")
+"""
+
+print("Example of what a function call result might look like:")
+print('''
+{
+    "location": "New York",
+    "temperature": 22.5,
+    "condition": "Sunny", 
+    "unit": "celsius"
+}
+''')</pre>
+            </div>
+
+            <h4>Agent Frameworks</h4>
+            <p>Pydantic AI provides agent frameworks for building complex AI workflows that can use tools, make decisions, and maintain state across interactions.</p>
+
+            <div class="code-block">
+<pre># Example of a simple agent (conceptual, not runnable)
+"""
+from pydantic_ai import Agent, Tool
+
+# Define tools the agent can use
+search_tool = Tool(search, description="Search for information")
+weather_tool = Tool(get_weather, description="Get weather information")
+
+# Create an agent with the tools
+agent = Agent(tools=[search_tool, weather_tool])
+
+# Run the agent with a user query
+result = agent.run("I'm planning a trip to Paris next week. What's the weather forecast and what are some must-see attractions?")
+print(f"Agent response: {result}")
+"""</pre>
+            </div>
+
+            <div class="concept-list">
+                <h4><span class="emoji">💡</span>Pydantic AI Use Cases</h4>
+                <ul>
+                    <li><strong>Chatbots:</strong> Building chatbots with structured responses and data validation</li>
+                    <li><strong>AI Assistants:</strong> Creating AI assistants that can take actions using defined tools</li>
+                    <li><strong>Data Extraction:</strong> Extracting structured data from unstructured text sources</li>
+                    <li><strong>Decision Workflows:</strong> Implementing complex decision-making workflows with AI</li>
+                    <li><strong>Type Safety:</strong> Ensuring type safety and data validation in AI applications</li>
+                </ul>
+            </div>
+
+            <h4>Best Practices for Pydantic and Pydantic AI</h4>
+            <div class="highlight">
+                <h4><span class="emoji">✨</span>Best Practices</h4>
+                <ul>
+                    <li><strong>Use descriptive field descriptions:</strong> Help AI understand what data to extract</li>
+                    <li><strong>Add validation constraints:</strong> Use Field() with constraints to ensure data quality</li>
+                    <li><strong>Create nested models:</strong> Break complex data into smaller, manageable models</li>
+                    <li><strong>Write custom validators:</strong> Implement business logic validation</li>
+                    <li><strong>Handle ValidationError:</strong> Always handle validation errors gracefully</li>
+                    <li><strong>Use type hints:</strong> Leverage Python's type system for better IDE support</li>
+                </ul>
+            </div>
+
+            <div class="info">
+                <h4><span class="emoji">📚</span>Learning Resources</h4>
+                <p>To learn more about Pydantic and Pydantic AI:</p>
+                <ul>
+                    <li><strong>Pydantic Documentation:</strong> Official documentation with examples and best practices</li>
+                    <li><strong>Pydantic AI GitHub:</strong> Source code, examples, and community contributions</li>
+                    <li><strong>Type Hints:</strong> Understanding Python's type system enhances Pydantic usage</li>
+                    <li><strong>FastAPI:</strong> Popular web framework built on Pydantic for API development</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🐍 Python Tutorial Complete!</h3>
+            <p>This comprehensive tutorial covered Python from basic concepts to advanced features, including the latest Python 3.10-3.14 developments and modern data validation with Pydantic.</p>
+            <p>Python continues to evolve rapidly with performance improvements, new language features, and growing ecosystem support for AI and data science applications.</p>
+            <p><strong>Keep coding, keep learning! 🚀</strong></p>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tab buttons
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Show the selected tab content and mark button as active
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add copy functionality to code blocks (if needed)
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                block.addEventListener('click', function() {
+                    // Optional: Add copy-to-clipboard functionality
+                    this.style.backgroundColor = '#e8f4f8';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '#f8f8f8';
+                    }, 200);
+                });
+            });
+            
+            // Smooth scrolling for better UX
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
