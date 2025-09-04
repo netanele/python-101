@@ -229,7 +229,7 @@
 
         /* Light Theme Syntax Highlighting (Default) */
         .code-block .comment {
-            color: #22863a;
+            color: #008000;
             font-style: italic;
         }
 
@@ -279,7 +279,7 @@
 
         /* Dark Theme Syntax Highlighting */
         .dark-theme .code-block .comment {
-            color: #7ee787;
+            color: #00ff00;
             font-style: italic;
         }
 
@@ -2231,11 +2231,33 @@ print(f"Agent response: {result}")
             // Class definitions
             code = code.replace(/\b(class)\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, '<span class="keyword">$1</span> <span class="class">$2</span>');
             
-            // Python keywords (avoid matching within HTML tags)
-            code = code.replace(/\b(and|as|assert|break|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|not|or|pass|raise|return|try|while|with|yield|async|await|nonlocal|True|False|None)\b(?![^<]*>)/g, '<span class="keyword">$1</span>');
+            // Python keywords (avoid matching within HTML tags or comment spans)
+            code = code.replace(/\b(and|as|assert|break|continue|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|not|or|pass|raise|return|try|while|with|yield|async|await|nonlocal|True|False|None)\b(?![^<]*>)(?!.*<\/span>)/g, function(match, keyword, offset, string) {
+                // Check if this keyword is inside a comment span
+                const beforeMatch = string.substring(0, offset);
+                const lastCommentStart = beforeMatch.lastIndexOf('<span class="comment">');
+                const lastCommentEnd = beforeMatch.lastIndexOf('</span>');
+                
+                // If we're inside a comment span, don't highlight as keyword
+                if (lastCommentStart > lastCommentEnd) {
+                    return match; // Return unchanged
+                }
+                return '<span class="keyword">' + keyword + '</span>';
+            });
             
-            // Python built-in functions (avoid matching within HTML tags)
-            code = code.replace(/\b(abs|all|any|ascii|bin|bool|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|vars|zip|__import__|__init__|__str__|__repr__|__add__|__eq__|__enter__|__exit__|__call__|__next__|__iter__)\b(?![^<]*>)/g, '<span class="builtin">$1</span>');
+            // Python built-in functions (avoid matching within HTML tags or comment spans)
+            code = code.replace(/\b(abs|all|any|ascii|bin|bool|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|vars|zip|__import__|__init__|__str__|__repr__|__add__|__eq__|__enter__|__exit__|__call__|__next__|__iter__)\b(?![^<]*>)/g, function(match, builtin, offset, string) {
+                // Check if this builtin is inside a comment span
+                const beforeMatch = string.substring(0, offset);
+                const lastCommentStart = beforeMatch.lastIndexOf('<span class="comment">');
+                const lastCommentEnd = beforeMatch.lastIndexOf('</span>');
+                
+                // If we're inside a comment span, don't highlight as builtin
+                if (lastCommentStart > lastCommentEnd) {
+                    return match; // Return unchanged
+                }
+                return '<span class="builtin">' + builtin + '</span>';
+            });
             
             // Restore strings
             for (let i = 0; i < strings.length; i++) {
