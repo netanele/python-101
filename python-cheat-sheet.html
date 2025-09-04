@@ -202,8 +202,6 @@
         }
 
         .code-block {
-            background: #0d1117;
-            border: 1px solid #30363d;
             border-radius: 6px;
             padding: 1rem;
             margin: 1rem 0;
@@ -211,50 +209,110 @@
             font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.45;
-            color: #e6edf3;
+            transition: all 0.3s ease;
         }
 
         .code-block pre {
             margin: 0;
-            color: #e6edf3;
         }
 
-        /* GitHub Dark Default Syntax Highlighting */
+        /* Light Theme Code Block Styles (Default) */
+        .code-block {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            color: #24292f;
+        }
+
+        .code-block pre {
+            color: #24292f;
+        }
+
+        /* Light Theme Syntax Highlighting (Default) */
         .code-block .comment {
-            color: #8b949e;
+            color: #22863a;
             font-style: italic;
         }
 
         .code-block .keyword {
-            color: #ff7b72;
+            color: #d73a49;
             font-weight: 600;
         }
 
         .code-block .string {
-            color: #a5d6ff;
+            color: #032f62;
         }
 
         .code-block .number {
-            color: #79c0ff;
+            color: #005cc5;
         }
 
         .code-block .function {
-            color: #d2a8ff;
+            color: #6f42c1;
         }
 
         .code-block .class {
-            color: #ffa657;
+            color: #e36209;
         }
 
         .code-block .variable {
-            color: #ffa657;
+            color: #24292f;
         }
 
         .code-block .operator {
-            color: #ff7b72;
+            color: #d73a49;
         }
 
         .code-block .builtin {
+            color: #005cc5;
+        }
+
+        /* Dark Theme Code Block Styles */
+        .dark-theme .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+        }
+
+        .dark-theme .code-block pre {
+            color: #e6edf3;
+        }
+
+        /* Dark Theme Syntax Highlighting */
+        .dark-theme .code-block .comment {
+            color: #7ee787;
+            font-style: italic;
+        }
+
+        .dark-theme .code-block .keyword {
+            color: #ff7b72;
+            font-weight: 600;
+        }
+
+        .dark-theme .code-block .string {
+            color: #a5d6ff;
+        }
+
+        .dark-theme .code-block .number {
+            color: #79c0ff;
+        }
+
+        .dark-theme .code-block .function {
+            color: #d2a8ff;
+        }
+
+        .dark-theme .code-block .class {
+            color: #ffa657;
+        }
+
+        .dark-theme .code-block .variable {
+            color: #e6edf3;
+        }
+
+        .dark-theme .code-block .operator {
+            color: #ff7b72;
+        }
+
+        .dark-theme .code-block .builtin {
             color: #79c0ff;
         }
 
@@ -266,55 +324,6 @@
 
         .light-theme .container {
             background: #ffffff;
-        }
-
-        .light-theme .code-block {
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            color: #24292f;
-        }
-
-        .light-theme .code-block pre {
-            color: #24292f;
-        }
-
-        /* Light Theme Syntax Highlighting */
-        .light-theme .code-block .comment {
-            color: #6a737d;
-            font-style: italic;
-        }
-
-        .light-theme .code-block .keyword {
-            color: #d73a49;
-            font-weight: 600;
-        }
-
-        .light-theme .code-block .string {
-            color: #032f62;
-        }
-
-        .light-theme .code-block .number {
-            color: #005cc5;
-        }
-
-        .light-theme .code-block .function {
-            color: #6f42c1;
-        }
-
-        .light-theme .code-block .class {
-            color: #e36209;
-        }
-
-        .light-theme .code-block .variable {
-            color: #e36209;
-        }
-
-        .light-theme .code-block .operator {
-            color: #d73a49;
-        }
-
-        .light-theme .code-block .builtin {
-            color: #005cc5;
         }
 
         .light-theme .output {
@@ -2203,8 +2212,15 @@ print(f"Agent response: {result}")
                 return placeholder;
             });
             
-            // Now handle comments (after strings are protected)
-            code = code.replace(/(#[^<]*$)/gm, '<span class="comment">$1</span>');
+            // Now handle comments (after strings are protected)  
+            // Split code into lines and process each line separately
+            const lines = code.split('\n');
+            code = lines.map(line => {
+                // Match # comments at start of line or after whitespace, but not inside HTML tags
+                return line.replace(/(^|\s)(#[^<]*$)/, function(match, prefix, comment) {
+                    return prefix + '<span class="comment">' + comment + '</span>';
+                });
+            }).join('\n');
             
             // Numbers (integers, floats, hex, binary, octal)
             code = code.replace(/\b(0[xX][0-9a-fA-F]+|0[bB][01]+|0[oO][0-7]+|\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g, '<span class="number">$1</span>');
